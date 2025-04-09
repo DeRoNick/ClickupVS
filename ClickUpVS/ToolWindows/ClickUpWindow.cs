@@ -6,15 +6,15 @@ using System.Windows;
 
 namespace ClickUpVS
 {
-	public class MyToolWindow : BaseToolWindow<MyToolWindow>
+	public class ClickUpWindow : BaseToolWindow<ClickUpWindow>
 	{
-		public override string GetTitle(int toolWindowId) => "My Tool Window";
+		public override string GetTitle(int toolWindowId) => "ClickUp";
 
 		public override Type PaneType => typeof(Pane);
 
 		public override Task<FrameworkElement> CreateAsync(int toolWindowId, CancellationToken cancellationToken)
 		{
-			return Task.FromResult<FrameworkElement>(new MyToolWindowControl());
+			return Task.FromResult<FrameworkElement>(new ClickUpWindowControl());
 		}
 
 		[Guid("ac028f23-a72a-49e3-81cd-e64f49d0fe2a")]

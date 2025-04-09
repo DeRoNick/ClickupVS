@@ -22,6 +22,6 @@ namespace ClickUpVS
     /// </summary>
     internal sealed partial class PackageIds
     {
-        public const int MyCommand = 0x0100;
+        public const int OpenWindow = 0x0100;
     }
 }

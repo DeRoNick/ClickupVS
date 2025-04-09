@@ -9,9 +9,9 @@
   <Commands package="ClickUpVS">
     <!--This section defines the elements the user can interact with, like a menu command or a button or combo box in a toolbar. -->
     <Buttons>
-      <Button guid="ClickUpVS" id="MyCommand" priority="0x0100" type="Button">
+		<Button guid="ClickUpVS" id="OpenWindow" priority="0x0100" type="Button">
         <Parent guid="VSMainMenu" id="View.DevWindowsGroup.OtherWindows.Group1"/>
-        <Icon guid="ImageCatalogGuid" id="ToolWindow" />
+	    <Icon guid="ImageCatalogGuid" id="EditTaskList" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>ClickUp Window</ButtonText>
@@ -23,7 +23,7 @@
 
   <Symbols>
     <GuidSymbol name="ClickUpVS" value="{d449f8aa-078d-44c5-a3c4-7d270109bcb0}">
-      <IDSymbol name="MyCommand" value="0x0100" />
+      <IDSymbol name="OpenWindow" value="0x0100" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

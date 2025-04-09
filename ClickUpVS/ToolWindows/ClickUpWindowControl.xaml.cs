@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace ClickUpVS
 {
-	public partial class MyToolWindowControl : UserControl
+	public partial class ClickUpWindowControl : UserControl
 	{
-		public MyToolWindowControl()
+		public ClickUpWindowControl()
 		{
 			InitializeComponent();
 		}
