@@ -12,6 +12,7 @@ namespace ClickUpVS
 	[ProvideToolWindow(typeof(ClickUpWindow.Pane), Style = VsDockStyle.Tabbed, Window = WindowGuids.SolutionExplorer)]
 	[ProvideMenuResource("Menus.ctmenu", 1)]
 	[Guid(PackageGuids.ClickUpVSString)]
+	[ProvideOptionPage(typeof(OptionsProvider.GeneralOptions), "ClickUpVS", "General", 0, 0, true, SupportsProfiles = true)]
 	public sealed class ClickUpVSPackage : ToolkitPackage
 	{
 		protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
