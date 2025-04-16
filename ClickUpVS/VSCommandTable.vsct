@@ -15,7 +15,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>ClickUp Window</ButtonText>
-          <LocCanonicalName>.View.MyToolWindow</LocCanonicalName>
+          <LocCanonicalName>.View.ClickUp</LocCanonicalName>
         </Strings>
       </Button>
     </Buttons>

@@ -14,7 +14,27 @@
              d:DesignWidth="300"
              Name="MyToolWindow">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <StackPanel x:Name="ApiKeyPromptPanel"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="300"
+                    Visibility="Collapsed">
+
+            <TextBlock Text="Enter your ClickUp API Key:"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       FontWeight="Bold" />
+
+            <TextBox x:Name="ApiKeyInput"
+                         Padding="5"
+                         Margin="10"/>
+
+            <Button Content="Save API Key"
+                    FontSize="8"
+                    Click="SaveApiKeyButton_Click"
+                    Padding="6" Width="92"/>
+        </StackPanel>
+        <StackPanel x:Name="ClickMe" Orientation="Vertical" Visibility="Collapsed">
             <Label x:Name="lblHeadline"
                    Margin="10"
                    HorizontalAlignment="Center">Title</Label>
