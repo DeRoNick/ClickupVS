@@ -82,12 +82,12 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ToolWindows\ClickUpWindow.cs" />
-    <Page Include="ToolWindows\ClickUpWindowControl.xaml">
+    <Compile Include="ToolWindows\ClickUp\ClickUpWindow.cs" />
+    <Page Include="ToolWindows\ClickUp\ClickUpWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="ToolWindows\ClickUpWindowControl.xaml.cs">
+    <Compile Include="ToolWindows\ClickUp\ClickUpWindowControl.xaml.cs">
       <DependentUpon>ClickUpWindowControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
