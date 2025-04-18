@@ -60,6 +60,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
+    <Compile Include="Views\WorkspaceSelector.xaml.cs">
+      <DependentUpon>WorkspaceSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +96,10 @@
     <Compile Include="ToolWindows\ClickUp\ClickUpWindowControl.xaml.cs">
       <DependentUpon>ClickUpWindowControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\WorkspaceSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
