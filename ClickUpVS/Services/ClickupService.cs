@@ -21,5 +21,10 @@ namespace ClickUpVS.Services
 		{
 			return (await _client.GetWorkspacesAsync(cancellationToken)).Teams;
 		}
+
+		public async Task<List<Space>> GetSpacesAsync(string workspaceId, CancellationToken cancellationToken = default)
+		{
+			return (await _client.GetSpaces(workspaceId, cancellationToken)).Spaces;
+		}
 	}
 }

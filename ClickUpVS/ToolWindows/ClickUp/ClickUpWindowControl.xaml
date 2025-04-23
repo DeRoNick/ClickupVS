@@ -44,6 +44,8 @@
 
             <views:WorkspaceSelector x:Name="WorkspaceSelector"/>
 
+            <views:SpaceList x:Name="SpaceList"/>
+
             <!-- Replace this with your actual task view etc -->
 			<TextBlock Text="TODO other stuff"
 			   FontSize="14"

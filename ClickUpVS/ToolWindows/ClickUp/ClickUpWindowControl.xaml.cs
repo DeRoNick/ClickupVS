@@ -15,7 +15,7 @@ namespace ClickUpVS
 		{
 			InitializeComponent();
 			_ = InitializeAsync();
-			WorkspaceSelector.SelectionChanged += OnSelectionChanged;
+			WorkspaceSelector.SelectionChanged += OnWorkspaceSelectionChanged;
 		}
 
 		private async Task InitializeAsync()
@@ -73,6 +73,8 @@ namespace ClickUpVS
 				if (workspaces.Count > 0)
 				{
 					WorkspaceSelector.WorkspaceComboBox.SelectedIndex = 0;
+
+					ThreadHelper.JoinableTaskFactory.RunAsync(async () => await LoadSpacesAsync(workspaces[0].Id)).FireAndForget();
 				}
 			}
 			catch (Exception ex)
@@ -81,16 +83,35 @@ namespace ClickUpVS
 			}
 		}
 
-		private async void ClickUp_Loaded(object sender, RoutedEventArgs e)
+		private async Task LoadSpacesAsync(string workspaceId)
+		{
+			var spaces = await _service.GetSpacesAsync(workspaceId);
+
+			await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+			SpaceList.SpacesListBox.ItemsSource = spaces;
+
+			if (spaces.Count > 0)
+			{
+				SpaceList.SpacesListBox.SelectedIndex = 0;
+			}
+		}
+
+		private void ClickUp_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (_service is null) return;
 
 			ThreadHelper.JoinableTaskFactory.RunAsync(async () => await LoadDataAsync()).FireAndForget();
 		}
 
-		private void OnSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void OnWorkspaceSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			VS.MessageBox.Show("on selection changed");
+			VS.MessageBox.Show("on workspace selection changed");
+		}
+
+		private void OnSpaceSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			VS.MessageBox.Show("on space selection changed");
 		}
 	}
 }

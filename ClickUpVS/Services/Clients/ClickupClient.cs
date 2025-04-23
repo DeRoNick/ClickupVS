@@ -14,5 +14,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("team")]
 		public Task<GetWorkspacesResponse> GetWorkspacesAsync(CancellationToken cancellationToken = default);
+
+		[Get("team/{workspaceId}/space")]
+		public Task<GetSpacesResponse> GetSpaces([Path] string workspaceId, CancellationToken cancellationToken = default);
 	}
 }

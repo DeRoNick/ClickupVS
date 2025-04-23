@@ -3,20 +3,20 @@
 namespace ClickUpVS.Views
 {
 	/// <summary>
-	/// Interaction logic for WorkspaceSelector.xaml
+	/// Interaction logic for SpaceList.xaml
 	/// </summary>
-	public partial class WorkspaceSelector : UserControl
+	public partial class SpaceList : UserControl
 	{
 		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> SelectionChanged;
 
-		public WorkspaceSelector()
+		public SpaceList()
 		{
 			InitializeComponent();
 		}
 
-		private void WorkspaceComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void SpacesListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			SelectionChanged?.Invoke(this, e);
-		}
-	}
+        }
+    }
 }

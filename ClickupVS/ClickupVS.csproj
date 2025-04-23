@@ -54,11 +54,15 @@
     <Compile Include="ClickUpVSPackage.cs" />
     <Compile Include="Services\ClickupService.cs" />
     <Compile Include="Services\Clients\ClickupClient.cs" />
+    <Compile Include="Services\Clients\Models\GetSpacesResponse.cs" />
     <Compile Include="Services\Clients\Models\GetWorkspaces.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpaceList.xaml.cs">
+      <DependentUpon>SpaceList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WorkspaceSelector.xaml.cs">
       <DependentUpon>WorkspaceSelector.xaml</DependentUpon>
@@ -96,6 +100,10 @@
     <Compile Include="ToolWindows\ClickUp\ClickUpWindowControl.xaml.cs">
       <DependentUpon>ClickUpWindowControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\SpaceList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WorkspaceSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
