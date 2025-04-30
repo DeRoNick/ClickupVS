@@ -4,17 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClickUpVS.Views"
+             xmlns:models="clr-namespace:ClickUpVS.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type models:Space}" x:Name="Spaces" ItemsSource="{Binding Path=Children}">
+            <TextBlock Text="{Binding Name}" Foreground="White"/>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate DataType="{x:Type models:List}" x:Name="Lists">
+            <TextBlock Text="{Binding Name}" Foreground="LightGray"/>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate DataType="{x:Type models:Folder}" x:Name="Folders">
+            <TextBlock Text="{Binding Name}" Foreground="White"/>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    
     <DockPanel>
         <TextBlock Text="Spaces"
                    FontWeight="Bold"
                    Margin="10"
                    DockPanel.Dock="Top"/>
 
-        <ListBox x:Name="SpacesListBox"
-                 DisplayMemberPath="Name"
-                 BorderThickness="1"
-                 DockPanel.Dock="Top" HorizontalAlignment="Left" SelectionChanged="SpacesListBox_SelectionChanged"/>
+        <TreeView x:Name="SpacesTree"
+                  Background="#1E1E1E"
+                  BorderThickness="0"
+                  Foreground="White" />
+        
     </DockPanel>
 </UserControl>

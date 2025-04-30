@@ -24,7 +24,18 @@ namespace ClickUpVS.Services
 
 		public async Task<List<Space>> GetSpacesAsync(string workspaceId, CancellationToken cancellationToken = default)
 		{
-			return (await _client.GetSpaces(workspaceId, cancellationToken)).Spaces;
+			var spaces = (await _client.GetSpacesAsync(workspaceId, cancellationToken)).Spaces;
+
+			foreach (var space in spaces)
+			{
+				var folders = (await _client.GetFoldersAsync(space.Id, cancellationToken)).Folders;
+				space.Folders = folders;
+
+				var lists = (await _client.GetFolderlessListsAsync(space.Id, cancellationToken)).Lists;
+				space.Lists = lists;
+			}
+
+			return spaces;
 		}
 	}
 }

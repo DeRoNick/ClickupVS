@@ -89,12 +89,7 @@ namespace ClickUpVS
 
 			await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-			SpaceList.SpacesListBox.ItemsSource = spaces;
-
-			if (spaces.Count > 0)
-			{
-				SpaceList.SpacesListBox.SelectedIndex = 0;
-			}
+			SpaceList.SpacesTree.ItemsSource = spaces;
 		}
 
 		private void ClickUp_Loaded(object sender, RoutedEventArgs e)
