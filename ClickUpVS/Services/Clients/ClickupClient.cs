@@ -23,5 +23,11 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("space/{spaceId}/list")]
 		public Task<GetFolderlessListsResponse> GetFolderlessListsAsync([Path] string spaceId, CancellationToken cancellationToken = default);
+
+		[Get("list/{listId}/task")]
+		public Task<GetTasksResponse> GetTasksAsync([Path] string listId, CancellationToken cancellationToken = default);
+
+		[Get("folder/{folderId}/list")]
+		public Task<GetListsResponse> GetListsAsync([Path] string folderId, CancellationToken cancellationToken = default);
 	}
 }

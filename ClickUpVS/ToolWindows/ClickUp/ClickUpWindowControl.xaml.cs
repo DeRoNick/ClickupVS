@@ -1,6 +1,7 @@
-﻿using ClickUpVS.Services;
+﻿using ClickUpVS.Models;
+using ClickUpVS.Services;
+using ClickUpVS.Views.Models;
 using Microsoft.VisualStudio.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,6 +17,7 @@ namespace ClickUpVS
 			InitializeComponent();
 			_ = InitializeAsync();
 			WorkspaceSelector.SelectionChanged += OnWorkspaceSelectionChanged;
+			SpaceList.SelectionChanged += OnSpaceSelectionChanged;
 		}
 
 		private async Task InitializeAsync()
@@ -104,9 +106,23 @@ namespace ClickUpVS
 			VS.MessageBox.Show("on workspace selection changed");
 		}
 
-		private void OnSpaceSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		private void OnSpaceSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-			VS.MessageBox.Show("on space selection changed");
+			var item = e.NewValue;
+
+			if (item is Folder folder)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var list = await _service.GetListWithTasksAsync(folder.Id);
+
+					var viewModel = new ProjectsListViewModel(list);
+
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					ProjectsList.DataContext = viewModel;
+				}).FireAndForget();
+			}
 		}
 	}
 }

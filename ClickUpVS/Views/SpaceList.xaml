@@ -36,6 +36,7 @@
                    DockPanel.Dock="Top"/>
 
         <TreeView x:Name="SpacesTree"
+                  SelectedItemChanged="SpacesTree_SelectedItemChanged"
                   Background="#1E1E1E"
                   BorderThickness="0"
                   Foreground="White" />

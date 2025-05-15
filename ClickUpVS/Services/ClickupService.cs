@@ -37,5 +37,29 @@ namespace ClickUpVS.Services
 
 			return spaces;
 		}
+
+		public async Task<List<List>> GetListWithTasksAsync(string folderId, CancellationToken cancellationToken = default)
+		{
+			var lists = await GetListsAsync(folderId, cancellationToken);
+
+			foreach (var list in lists)
+			{
+				var tasks = await GetTasksAsync(list.Id, cancellationToken);
+
+				list.Tasks = tasks;
+			}
+
+			return lists;
+		}
+
+		public async Task<List<List>> GetListsAsync(string folderId, CancellationToken cancellationToken = default)
+		{
+			return (await _client.GetListsAsync(folderId, cancellationToken)).Lists;
+		}
+
+		public async Task<List<TaskItem>> GetTasksAsync(string listId, CancellationToken cancellationToken = default)
+		{
+			return (await _client.GetTasksAsync(listId, cancellationToken)).Tasks;
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ClickUpVS.Models
@@ -17,5 +18,8 @@ namespace ClickUpVS.Models
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
+
+		[JsonIgnore]
+		public List<TaskItem> Tasks { get; set; }
 	}
 }
