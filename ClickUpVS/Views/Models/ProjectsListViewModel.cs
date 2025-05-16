@@ -10,6 +10,7 @@ namespace ClickUpVS.Views.Models
 		public string Name { get; set; }
 		public string Color { get; set; }
 		public List<TaskItem> Tasks { get; set; }
+		public bool IsExpanded { get; set; } = true;
 	}
 
 	internal class ProjectModel
@@ -17,6 +18,7 @@ namespace ClickUpVS.Views.Models
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public List<StatusGroup> StatusGroups { get; set; }
+		public bool IsExpanded { get; set; } = true;
 	}
 
 	internal class ProjectsListViewModel
