@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
+             xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
              xmlns:local="clr-namespace:ClickUpVS.Views"
              xmlns:models="clr-namespace:ClickUpVS.Views.Models"
              mc:Ignorable="d" 
@@ -62,7 +64,12 @@
         </ScrollViewer>
 
         <Border Grid.Column="0" Background="#1E1E1E" x:Name="DetailedView" Padding="10" Visibility="Collapsed">
-            <local:TaskDetailView x:Name="TaskDetailView" />
+            <StackPanel>
+                <Button HorizontalAlignment="Left" x:Name="BackButton" Width="16" Height="16" ToolTip="Back" Click="BackButton_Click">
+                    <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.Backwards}" />
+                </Button>
+                <local:TaskDetailView x:Name="TaskDetailView" />
+            </StackPanel>
         </Border>
 
     </Grid>

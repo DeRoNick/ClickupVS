@@ -33,5 +33,11 @@ namespace ClickUpVS.Views
 		{
 			ButtonClicked?.Invoke(sender, e);
         }
+
+		private void BackButton_Click(object sender, RoutedEventArgs e)
+		{
+			DetailedView.Visibility = Visibility.Collapsed;
+			ListView.Visibility = Visibility.Visible;
+		}
     }
 }
