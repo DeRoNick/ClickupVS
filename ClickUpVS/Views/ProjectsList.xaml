@@ -7,42 +7,64 @@
              xmlns:models="clr-namespace:ClickUpVS.Views.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Projects}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10" CornerRadius="4">
-                        <Expander Header="{Binding Name}" IsExpanded="{Binding IsExpanded}" Background="#2a2a2a" Foreground="White" FontWeight="Bold">
-                            <ItemsControl ItemsSource="{Binding StatusGroups}" Margin="10,5,0,0">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type models:StatusGroup}">
-                                        <Expander IsExpanded="{Binding IsExpanded}" Margin="0,0,0,10">
-                                            <Expander.Header>
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <Border Background="{Binding Color}" Padding="4" CornerRadius="3" Margin="0,0,5,0">
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                            <TextBlock Text="⬤" Foreground="White" Margin="0,0,3,0"/>
-                                                            <TextBlock Text="{Binding Name}" Foreground="White"/>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </StackPanel>
-                                            </Expander.Header>
 
-                                            <ItemsControl ItemsSource="{Binding Tasks}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" Foreground="White"/>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Expander>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Expander>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Visibility="Visible" x:Name="ListView">
+            <ItemsControl ItemsSource="{Binding Projects}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10" CornerRadius="4">
+                            <Expander Header="{Binding Name}" IsExpanded="{Binding IsExpanded}" Background="#2a2a2a" Foreground="White" FontWeight="Bold">
+                                <ItemsControl ItemsSource="{Binding StatusGroups}" Margin="10,5,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type models:StatusGroup}">
+                                            <Expander IsExpanded="{Binding IsExpanded}" Margin="0,0,0,10">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Border Background="{Binding Color}" Padding="4" CornerRadius="3" Margin="0,0,5,0">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock Text="⬤" Foreground="White" Margin="0,0,3,0"/>
+                                                                <TextBlock Text="{Binding Name}" Foreground="White"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </Expander.Header>
+
+                                                <ItemsControl ItemsSource="{Binding Tasks}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <!--<TextBlock Text="{Binding Name}" Foreground="White"/>-->
+                                                            <Button Content="{Binding Name}"
+                                                                    HorizontalAlignment="Left"
+                                                                    Cursor="Hand"
+                                                                    Background="Transparent"
+                                                                    Foreground="White" 
+                                                                    Click="Button_Click" 
+                                                                    Tag="{Binding}"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Expander>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Expander>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border Grid.Column="0" Background="#1E1E1E" x:Name="DetailedView" Padding="10" Visibility="Collapsed">
+            <local:TaskDetailView x:Name="TaskDetailView" />
+        </Border>
+
+    </Grid>
+ 
 </UserControl>

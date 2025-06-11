@@ -1,6 +1,4 @@
-﻿using ClickUpVS.Models;
-using ClickUpVS.Views.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,20 +16,13 @@ using System.Windows.Shapes;
 namespace ClickUpVS.Views
 {
 	/// <summary>
-	/// Interaction logic for ProjectsList.xaml
+	/// Interaction logic for TaskDetailView.xaml
 	/// </summary>
-	public partial class ProjectsList : UserControl
+	public partial class TaskDetailView : UserControl
 	{
-		public event EventHandler<RoutedEventArgs> ButtonClicked;
-
-		public ProjectsList()
+		public TaskDetailView()
 		{
 			InitializeComponent();
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			ButtonClicked?.Invoke(sender, e);
-        }
-    }
+	}
 }

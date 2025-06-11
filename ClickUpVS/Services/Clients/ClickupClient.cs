@@ -2,6 +2,7 @@
 using RestEase;
 using System.Threading.Tasks;
 using System.Threading;
+using ClickUpVS.Models;
 
 namespace ClickUpVS.Services.Clients
 {
@@ -29,5 +30,11 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("folder/{folderId}/list")]
 		public Task<GetListsResponse> GetListsAsync([Path] string folderId, CancellationToken cancellationToken = default);
+
+		[Get("task/{taskId}")]
+		public Task<TaskDetail> GetTaskAsync([Path] string taskId, CancellationToken cancellationToken = default);
+
+		[Get("task/{taskId}/comment")]
+		public Task<GetTaskComments> GetTaskCommentsAsync([Path] string taskId, CancellationToken cancellationToken = default);
 	}
 }

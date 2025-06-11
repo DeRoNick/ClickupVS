@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="ClickUpVS.Views.TaskDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ClickUpVS.Views"
+             xmlns:converters="clr-namespace:ClickUpVS.Views.Converters"
+             xmlns:models="clr-namespace:ClickUpVS.Models"
+             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+             Background="#1E1E1E">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+
+                <UniformGrid Columns="2" Margin="0,0,0,0">
+                    <StackPanel Margin="0,0,10,10">
+                        <TextBlock Text="Status" FontWeight="Bold" Foreground="Gray"/>
+                        <Border HorizontalAlignment="Left" Background="{Binding Status.Color}" Padding="6,2" CornerRadius="4" Margin="0,3,0,0">
+                            <TextBlock Text="{Binding Status.Status}" Foreground="White" FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,10,10">
+                        <TextBlock Text="Assignees" FontWeight="Bold" Foreground="Gray"/>
+                        <ItemsControl ItemsSource="{Binding Assignees}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="models:User">
+                                    <Grid>
+                                        <Ellipse Width="25" Height="25" Fill="#6c6cff" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Initials}" 
+                                           Foreground="White" 
+                                           VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center"
+                                           FontWeight="Bold"
+                                           ToolTip="{Binding Username}"
+                                           FontSize="11"
+                                           TextAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,10,10">
+                        <TextBlock Text="Dates" FontWeight="Bold" Foreground="Gray"/>
+                        <TextBlock Foreground="White" Margin="0,3,0,0">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:M} -> {1:M}">
+                                    <Binding Path="StartDate"/>
+                                    <Binding Path="DueDate"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,10,10">
+                        <TextBlock Text="Priority" FontWeight="Bold" Foreground="Gray"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="10" Height="10" Background="{Binding Priority.Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Priority.Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                </UniformGrid>
+
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Tags" FontWeight="Bold" Foreground="Gray" Margin="0,0,0,5"/>
+
+                    <ItemsControl ItemsSource="{Binding Tags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel VerticalAlignment="Top"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding TagFg}" 
+                                    CornerRadius="10" 
+                                    Margin="3" 
+                                    Padding="8,4">
+                                    <TextBlock Text="{Binding Name}" 
+                                       Foreground="White"
+                                       FontSize="12"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <TextBlock Text="Description" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <TextBox Text="{Binding Description}" AcceptsReturn="True" Height="100" TextWrapping="Wrap"
+                         Background="#2a2a2a" Foreground="White" BorderThickness="0" Padding="6"/>
+
+                <TextBlock Text="Custom Fields" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <ItemsControl ItemsSource="{Binding CustomFields}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Key}" Foreground="White"/>
+                                <TextBlock Text="{Binding Value}" Foreground="White" Grid.Column="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="Subtasks" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <ItemsControl ItemsSource="{Binding Subtasks}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsDone}" Foreground="White"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="Checklists" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <ItemsControl ItemsSource="{Binding Checklists}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="White"/>
+                                <ItemsControl ItemsSource="{Binding Items}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsDone}" Foreground="White" Margin="0,5"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="Attachments" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <ItemsControl ItemsSource="{Binding Attachments}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#3a3a3a" BorderThickness="1" Padding="6" Margin="0,0,0,4" Background="#252525">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📎" FontSize="16" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding FileName}" Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GridSplitter Grid.Column="1"
+          Width="5"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Background="Gray"
+          ResizeBehavior="PreviousAndNext"
+          ResizeDirection="Columns"/>
+
+        <Border Grid.Column="2" Background="#141414" Padding="10" Margin="10,0,0,0">
+            <DockPanel>
+                <TextBlock Text="Activity" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,10" DockPanel.Dock="Top"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Comments}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:Comment}">
+                                <Border Background="#2b2b2b" CornerRadius="6" Padding="10" Margin="0 0 10 15" BorderBrush="#383838" BorderThickness="1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 0 5">
+                                            <Viewbox>
+                                                <Grid>
+                                                    <Ellipse Width="32" Height="32" Fill="#6c6cff"/>
+                                                    <TextBlock Text="{Binding User.Initials}" 
+                                                       Foreground="White" 
+                                                       VerticalAlignment="Center" 
+                                                       HorizontalAlignment="Center"
+                                                       FontWeight="Bold" 
+                                                       FontSize="14"
+                                                       TextAlignment="Center"/>
+                                                </Grid>
+                                            </Viewbox>
+                                            <TextBlock Text="{Binding User.Username}" FontWeight="Bold" Foreground="White" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Date, StringFormat='{}{0:MMM dd \@ h:mm tt}'}"
+                                               Foreground="Gray"
+                                               ToolTip="{Binding Date, StringFormat='{}{0:MMM dd \@ h:mm tt}'}"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               Margin="10 0 0 0"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding CommentText}" TextWrapping="Wrap" Foreground="White" Margin="0 5 0 0"/>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <ItemsControl ItemsSource="{Binding Reactions}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#3a3a3a" CornerRadius="4" Padding="4" VerticalAlignment="Center">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <emoji:TextBlock Text="{Binding ReactionEmoji}" FontSize="14"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,7 +1,9 @@
 ﻿using ClickUpVS.Models;
 using ClickUpVS.Services.Clients;
+using Newtonsoft.Json.Serialization;
 using RestEase;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +15,16 @@ namespace ClickUpVS.Services
 
 		public ClickupService(string apiKey)
 		{
-			_client = RestClient.For<IClickupClient>("https://api.clickup.com/");
+			_client = new RestClient("https://api.clickup.com/")
+			{
+				JsonSerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
+				{
+					ContractResolver = new DefaultContractResolver
+					{
+						NamingStrategy = new SnakeCaseNamingStrategy()
+					}
+				}
+			}.For<IClickupClient>();
 			_client.Auth = apiKey;
 		}
 
@@ -61,5 +72,15 @@ namespace ClickUpVS.Services
 		{
 			return (await _client.GetTasksAsync(listId, cancellationToken)).Tasks;
 		}
+
+		public async Task<TaskDetail> GetTaskAsync(string taskId, CancellationToken cancellationToken = default)
+		{
+			var task = await _client.GetTaskAsync(taskId, cancellationToken);
+
+			task.Comments = [.. (await _client.GetTaskCommentsAsync(taskId, cancellationToken)).Comments.OrderBy(x => x.Date)];
+
+			return task;
+		}
+
 	}
 }

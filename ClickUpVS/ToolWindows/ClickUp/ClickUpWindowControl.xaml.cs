@@ -18,6 +18,7 @@ namespace ClickUpVS
 			_ = InitializeAsync();
 			WorkspaceSelector.SelectionChanged += OnWorkspaceSelectionChanged;
 			SpaceList.SelectionChanged += OnSpaceSelectionChanged;
+			ProjectsList.ButtonClicked += OnTaskButtonClicked;
 		}
 
 		private async Task InitializeAsync()
@@ -34,6 +35,27 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnTaskButtonClicked(object sender, RoutedEventArgs e)
+		{
+			if (sender is Button button && button.Tag is TaskItem taskItem)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var taskDetail = await _service.GetTaskAsync(taskItem.Id);
+
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					var vm = ProjectsList.DataContext as ProjectsListViewModel;
+
+					vm.SelectedTask = taskDetail;
+					ProjectsList.TaskDetailView.DataContext = taskDetail;
+					ProjectsList.DetailedView.Visibility = Visibility.Visible;
+					ProjectsList.ListView.Visibility = Visibility.Collapsed;
+					
+				}).FireAndForget();
 			}
 		}
 

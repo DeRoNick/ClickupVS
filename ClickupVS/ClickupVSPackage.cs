@@ -14,6 +14,7 @@ namespace ClickUpVS
 	[InstalledProductRegistration(Vsix.Name, Vsix.Description, Vsix.Version)]
 	[ProvideToolWindow(typeof(ClickUpWindow.Pane), Style = VsDockStyle.Tabbed, Window = WindowGuids.SolutionExplorer)]
 	[ProvideMenuResource("Menus.ctmenu", 1)]
+	[ProvideBindingPath]
 	[Guid(PackageGuids.ClickUpVSString)]
 	[ProvideOptionPage(typeof(OptionsProvider.GeneralOptions), "ClickUpVS", "General", 0, 0, true, SupportsProfiles = true)]
 	public sealed class ClickUpVSPackage : ToolkitPackage

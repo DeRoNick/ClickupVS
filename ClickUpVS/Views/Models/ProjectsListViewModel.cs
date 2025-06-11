@@ -24,6 +24,7 @@ namespace ClickUpVS.Views.Models
 	internal class ProjectsListViewModel
 	{
 		public List<ProjectModel> Projects { get; set; }
+		public TaskDetail SelectedTask { get; set; }
 
 		public ProjectsListViewModel(List<List> lists)
 		{
