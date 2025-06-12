@@ -47,7 +47,8 @@
                                                                     Cursor="Hand"
                                                                     Background="Transparent"
                                                                     Foreground="White" 
-                                                                    Click="Button_Click" 
+                                                                    Click="Button_Click"
+                                                                    Margin="0 8 0 0"
                                                                     Tag="{Binding}"/>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
