@@ -76,6 +76,7 @@
     <Compile Include="Views\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\UnixMillisecondDateTimeConverter.cs" />
+    <Compile Include="Views\Extensions\TextBoxHelper.cs" />
     <Compile Include="Views\Models\ProjectsListViewModel.cs" />
     <Compile Include="Views\ProjectsList.xaml.cs">
       <DependentUpon>ProjectsList.xaml</DependentUpon>

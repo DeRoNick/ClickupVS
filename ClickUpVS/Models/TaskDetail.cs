@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ClickUpVS.Models
 {
@@ -45,11 +47,36 @@ namespace ClickUpVS.Models
 		public string Priority { get; set; }
 	}
 
-	internal class Checklist
+	internal class Checklist : INotifyPropertyChanged
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
-		public List<ChecklistItem> Items { get; set; }
+		public ObservableCollection<ChecklistItem> Items { get; set; }
+
+		[JsonIgnore]
+		private string newItemText = "";
+
+		[JsonIgnore]
+		public string NewItemText
+		{
+			get
+			{
+				return this.newItemText;
+			}
+
+			set
+			{
+				this.newItemText = value;
+				NotifyPropertyChanged();
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 
 	internal class ChecklistItem

@@ -126,5 +126,17 @@ namespace ClickUpVS.Services
 			}, cancellationToken);
 		}
 
+		public async Task<ChecklistItem> CreateChecklistItemAsync(string checklistId, string itemName, CancellationToken cancellationToken = default)
+		{
+			var result = await _client.CreateChecklistItemAsync(checklistId, new() { Name = itemName }, cancellationToken);
+
+			var item = result.Checklist.Items.First(x => x.Name == itemName);
+
+			item.Resolved = false;
+			item.ChecklistId = checklistId;
+
+			return item;
+		}
+
 	}
 }

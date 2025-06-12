@@ -24,6 +24,7 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnSendComment;
 		public event EventHandler<RoutedEventArgs> OnDeleteComment;
 		public event EventHandler<RoutedEventArgs> OnCheckChanged;
+		public event EventHandler<RoutedEventArgs> OnAddTaskItem;
 
 		public TaskDetailView()
 		{
@@ -70,6 +71,11 @@ namespace ClickUpVS.Views
 					VS.MessageBox.Show("Failed to open link: " + ex.Message);
 				}
 			}
+		}
+
+		private void AddTaskItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnAddTaskItem?.Invoke(sender, e);
 		}
 	}
 }

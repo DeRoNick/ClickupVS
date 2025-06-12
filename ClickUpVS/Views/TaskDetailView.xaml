@@ -6,6 +6,7 @@
              xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
              xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
              xmlns:models="clr-namespace:ClickUpVS.Models"
+             xmlns:extensions="clr-namespace:ClickUpVS.Views.Extensions"
              xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              Background="#1E1E1E">
     <UserControl.Resources>
@@ -136,7 +137,7 @@
                 <ItemsControl ItemsSource="{Binding Checklists}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="models:Checklist">
-                            <StackPanel>
+                            <StackPanel Margin="0 0 0 10">
                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="White"/>
                                 <ItemsControl ItemsSource="{Binding Items}">
                                     <ItemsControl.ItemTemplate>
@@ -145,6 +146,19 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+
+                                <Grid Margin="0 5 0 0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <emoji:RichTextBox Text="{Binding NewItemText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="0 5" Grid.Column="0" Background="Transparent" Foreground="White" BorderBrush="#444" BorderThickness="1"/>
+
+                                    <Button x:Name="AddTaskItem" Grid.Column="1" Padding="10 4" Background="#1E1E1E" Click="AddTaskItem_Click">
+                                        <imaging:CrispImage Width="10" Height="10" Moniker="{x:Static catalog:KnownMonikers.Send}"/>
+                                    </Button>
+                                </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

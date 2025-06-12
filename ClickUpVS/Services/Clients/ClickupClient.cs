@@ -48,5 +48,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Put("checklist/{checklistId}/checklist_item/{checklistItemId}")]
 		public Task UpdateChecklistAsync([Path] string checklistId, [Path] string checklistItemId, [Body] UpdateChecklistItemRequest request, CancellationToken cancellationToken = default);
+
+		[Post("checklist/{checklistId}/checklist_item")]
+		public Task<CreateChecklistItemResponse> CreateChecklistItemAsync([Path] string checklistId, [Body] CreateChecklistItemRequest request, CancellationToken cancellationToken = default);
 	}
 }
