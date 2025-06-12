@@ -20,9 +20,16 @@ namespace ClickUpVS.Views
 	/// </summary>
 	public partial class TaskDetailView : UserControl
 	{
+		public event EventHandler<RoutedEventArgs> OnSendComment;
+
 		public TaskDetailView()
 		{
 			InitializeComponent();
 		}
-	}
+
+		private void SendComment_Click(object sender, RoutedEventArgs e)
+		{
+			OnSendComment?.Invoke(sender, e);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using ClickUpVS.Views.Converters;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ClickUpVS.Models
 {
@@ -23,7 +24,7 @@ namespace ClickUpVS.Models
 		public string Url { get; set; }
 		public List<Checklist> Checklists { get; set; }
 
-		public List<Comment> Comments { get; set; }
+		public ObservableCollection<Comment> Comments { get; set; }
 		public List<User> Assignees { get; set; }
 		public PriorityModel Priority { get; set; }
 	}

@@ -36,5 +36,11 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("task/{taskId}/comment")]
 		public Task<GetTaskComments> GetTaskCommentsAsync([Path] string taskId, CancellationToken cancellationToken = default);
+
+		[Post("task/{taskId}/comment")]
+		public Task<CreateTaskCommentResponse> CreateTaskCommentAsync([Path] string taskId, [Body] CreateTaskCommentRequest request, CancellationToken cancellationToken = default);
+
+		[Get("user")]
+		public Task<AuthorizedUser> GetAuthorizedUserAsync(CancellationToken cancellationToken = default);
 	}
 }

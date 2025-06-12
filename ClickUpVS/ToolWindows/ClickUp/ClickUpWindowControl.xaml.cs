@@ -19,6 +19,7 @@ namespace ClickUpVS
 			WorkspaceSelector.SelectionChanged += OnWorkspaceSelectionChanged;
 			SpaceList.SelectionChanged += OnSpaceSelectionChanged;
 			ProjectsList.ButtonClicked += OnTaskButtonClicked;
+			ProjectsList.TaskDetailView.OnSendComment += OnSendComment;
 		}
 
 		private async Task InitializeAsync()
@@ -35,6 +36,24 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnSendComment(object sender, RoutedEventArgs e)
+		{
+			string comment = ProjectsList.TaskDetailView.CommentInput.Text;
+
+			if (!string.IsNullOrEmpty(comment))
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var commentModel = await _service.CreateTaskCommentAsync((ProjectsList.DataContext as ProjectsListViewModel).SelectedTask.Id, comment);
+
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					ProjectsList.TaskDetailView.CommentInput.Text = "";
+					(ProjectsList.TaskDetailView.DataContext as TaskDetail).Comments.Add(commentModel);
+				}).FireAndForget();
 			}
 		}
 

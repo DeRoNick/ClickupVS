@@ -1,5 +1,6 @@
 ﻿using ClickUpVS.Models;
 using ClickUpVS.Services.Clients;
+using ClickUpVS.Services.Clients.Models;
 using Newtonsoft.Json.Serialization;
 using RestEase;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace ClickUpVS.Services
 	internal class ClickupService
 	{
 		private readonly IClickupClient _client;
+		private readonly User CurrentUser;
 
 		public ClickupService(string apiKey)
 		{
@@ -26,6 +28,7 @@ namespace ClickUpVS.Services
 				}
 			}.For<IClickupClient>();
 			_client.Auth = apiKey;
+			CurrentUser = _client.GetAuthorizedUserAsync().Result.User;
 		}
 
 		public async Task<List<Workspace>> GetWorkSpacesAsync(CancellationToken cancellationToken = default)
@@ -80,6 +83,21 @@ namespace ClickUpVS.Services
 			task.Comments = [.. (await _client.GetTaskCommentsAsync(taskId, cancellationToken)).Comments.OrderBy(x => x.Date)];
 
 			return task;
+		}
+
+		public async Task<Comment> CreateTaskCommentAsync(string taskId, string comment, CancellationToken cancellationToken = default)
+		{
+			var result = await _client.CreateTaskCommentAsync(taskId, new() { CommentText = comment }, cancellationToken);
+
+			return new Comment()
+			{
+				CommentText = comment,
+				Date = result.Date,
+				Deletable = true,
+				Id = result.Id,
+				Reactions = [],
+				User = CurrentUser
+			};
 		}
 
 	}
