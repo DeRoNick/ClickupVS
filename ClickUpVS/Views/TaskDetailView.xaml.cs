@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickUpVS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,5 +44,32 @@ namespace ClickUpVS.Views
 		{
 			OnCheckChanged?.Invoke(sender, e);
         }
-    }
+
+		private void File_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			// use this if cant publish
+			//if (sender is StackPanel panel && panel.DataContext is Attachment attachment)
+			//{
+			//	VS.MessageBox.Show($"Visual studio extensions dont allow opening attachments directly from the extension for security reasons. Please copy the link and open it in your browser.\n {attachment.Url}");
+			//}
+
+			// this might make the extension unpublishable because it starts a process
+			// so its a security risk, lets leave it in for now
+
+			if (sender is StackPanel panel && panel.DataContext is Attachment attachment)
+			{
+				try
+				{
+					System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(string.IsNullOrEmpty(attachment.QueryUrl) ? attachment.Url : attachment.QueryUrl)
+					{
+						UseShellExecute = true
+					});
+				}
+				catch (Exception ex)
+				{
+					VS.MessageBox.Show("Failed to open link: " + ex.Message);
+				}
+			}
+		}
+	}
 }

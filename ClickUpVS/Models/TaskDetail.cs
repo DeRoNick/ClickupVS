@@ -27,6 +27,16 @@ namespace ClickUpVS.Models
 		public ObservableCollection<Comment> Comments { get; set; }
 		public List<User> Assignees { get; set; }
 		public PriorityModel Priority { get; set; }
+		public List<Attachment> Attachments { get; set; }
+	}
+
+	internal class Attachment
+	{
+		public string Title { get; set; }
+		public string Url { get; set; }
+
+		[JsonProperty("url_w_query")]
+		public string QueryUrl { get; set; }
 	}
 
 	internal class PriorityModel
