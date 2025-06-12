@@ -20,6 +20,7 @@ namespace ClickUpVS
 			SpaceList.SelectionChanged += OnSpaceSelectionChanged;
 			ProjectsList.ButtonClicked += OnTaskButtonClicked;
 			ProjectsList.TaskDetailView.OnSendComment += OnSendComment;
+			ProjectsList.TaskDetailView.OnDeleteComment += OnDeleteComment;
 		}
 
 		private async Task InitializeAsync()
@@ -36,6 +37,21 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnDeleteComment(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuItem menuItem && menuItem.DataContext is Comment comment)
+			{
+				string commentId = comment.Id;
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					await _service.DeleteCommentAsync(commentId);
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+					var taskDetail = ProjectsList.TaskDetailView.DataContext as TaskDetail;
+					taskDetail.Comments.Remove(comment);
+				}).FireAndForget();
 			}
 		}
 

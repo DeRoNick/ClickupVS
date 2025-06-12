@@ -80,7 +80,10 @@ namespace ClickUpVS.Services
 		{
 			var task = await _client.GetTaskAsync(taskId, cancellationToken);
 
-			task.Comments = [.. (await _client.GetTaskCommentsAsync(taskId, cancellationToken)).Comments.OrderBy(x => x.Date)];
+			task.Comments = [.. (await _client.GetTaskCommentsAsync(taskId, cancellationToken)).Comments.Select(x => {
+				x.Deletable = x.User.Id == CurrentUser.Id;
+				return x;
+			}).OrderBy(x => x.Date)];
 
 			return task;
 		}
@@ -98,6 +101,11 @@ namespace ClickUpVS.Services
 				Reactions = [],
 				User = CurrentUser
 			};
+		}
+
+		public async Task DeleteCommentAsync(string commentId, CancellationToken cancellationToken = default)
+		{
+			await _client.DeleteCommentAsync(commentId, cancellationToken);
 		}
 
 	}

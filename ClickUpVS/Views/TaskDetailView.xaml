@@ -188,6 +188,21 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type models:Comment}">
                                     <Border Background="#2b2b2b" CornerRadius="6" Padding="10" Margin="0 0 10 15" BorderBrush="#383838" BorderThickness="1">
+                                        <Border.ContextMenu>
+                                            <ContextMenu Visibility="{Binding Deletable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <MenuItem Click="DeleteComment_Click">
+                                                    <MenuItem.Header>
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <imaging:CrispImage Width="16" Height="16"
+                                                                Moniker="{x:Static catalog:KnownMonikers.DeleteListItem}"
+                                                                Margin="0,0,6,0"/>
+                                                            <TextBlock Text="Delete Comment"
+                                                               VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 0 5">
                                                 <Viewbox>

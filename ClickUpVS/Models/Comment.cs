@@ -32,6 +32,6 @@ namespace ClickUpVS.Models
 		[JsonConverter(typeof(UnixMillisecondDateTimeConverter))]
 		public DateTime Date { get; set; }
 
-		public bool Deletable { get; set; } = true;
+		public bool Deletable { get; set; }
 	}
 }

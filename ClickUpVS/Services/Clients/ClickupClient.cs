@@ -42,5 +42,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("user")]
 		public Task<AuthorizedUser> GetAuthorizedUserAsync(CancellationToken cancellationToken = default);
+
+		[Delete("comment/{commentId}")]
+		public Task DeleteCommentAsync([Path] string commentId, CancellationToken cancellationToken = default);
 	}
 }

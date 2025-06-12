@@ -21,6 +21,7 @@ namespace ClickUpVS.Views
 	public partial class TaskDetailView : UserControl
 	{
 		public event EventHandler<RoutedEventArgs> OnSendComment;
+		public event EventHandler<RoutedEventArgs> OnDeleteComment;
 
 		public TaskDetailView()
 		{
@@ -31,5 +32,10 @@ namespace ClickUpVS.Views
 		{
 			OnSendComment?.Invoke(sender, e);
         }
+
+		private void DeleteComment_Click(object sender, RoutedEventArgs e)
+		{
+			OnDeleteComment?.Invoke(sender, e);
+		}
     }
 }
