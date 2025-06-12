@@ -45,5 +45,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Delete("comment/{commentId}")]
 		public Task DeleteCommentAsync([Path] string commentId, CancellationToken cancellationToken = default);
+
+		[Put("checklist/{checklistId}/checklist_item/{checklistItemId}")]
+		public Task UpdateChecklistAsync([Path] string checklistId, [Path] string checklistItemId, [Body] UpdateChecklistItemRequest request, CancellationToken cancellationToken = default);
 	}
 }

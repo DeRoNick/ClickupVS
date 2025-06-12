@@ -22,6 +22,7 @@ namespace ClickUpVS.Views
 	{
 		public event EventHandler<RoutedEventArgs> OnSendComment;
 		public event EventHandler<RoutedEventArgs> OnDeleteComment;
+		public event EventHandler<RoutedEventArgs> OnCheckChanged;
 
 		public TaskDetailView()
 		{
@@ -37,5 +38,10 @@ namespace ClickUpVS.Views
 		{
 			OnDeleteComment?.Invoke(sender, e);
 		}
+
+		private void CheckBox_CheckChanged(object sender, RoutedEventArgs e)
+		{
+			OnCheckChanged?.Invoke(sender, e);
+        }
     }
 }

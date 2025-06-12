@@ -135,13 +135,13 @@
                 <TextBlock Text="Checklists" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
                 <ItemsControl ItemsSource="{Binding Checklists}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="models:Checklist">
                             <StackPanel>
                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="White"/>
                                 <ItemsControl ItemsSource="{Binding Items}">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsDone}" Foreground="White" Margin="0,5"/>
+                                        <DataTemplate DataType="models:ChecklistItem">
+                                            <CheckBox Unchecked="CheckBox_CheckChanged" Checked="CheckBox_CheckChanged" Content="{Binding Name}" IsChecked="{Binding Resolved}" Foreground="White" Margin="0,5"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

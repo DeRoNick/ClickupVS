@@ -21,6 +21,7 @@ namespace ClickUpVS
 			ProjectsList.ButtonClicked += OnTaskButtonClicked;
 			ProjectsList.TaskDetailView.OnSendComment += OnSendComment;
 			ProjectsList.TaskDetailView.OnDeleteComment += OnDeleteComment;
+			ProjectsList.TaskDetailView.OnCheckChanged += OnCheckChanged;
 		}
 
 		private async Task InitializeAsync()
@@ -37,6 +38,18 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnCheckChanged(object sender, RoutedEventArgs e)
+		{
+			if (sender is CheckBox checkBox && checkBox.DataContext is ChecklistItem checklistItem)
+			{
+				checklistItem.Resolved = checkBox.IsChecked ?? false;
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					await _service.UpdateChecklistItemAsync(checklistItem.ChecklistId, checklistItem.Id, checklistItem);
+				}).FireAndForget();
 			}
 		}
 

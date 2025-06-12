@@ -47,6 +47,7 @@ namespace ClickUpVS.Models
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public bool Resolved { get; set; }
+		public string ChecklistId { get; set; }
 	}
 
 	internal class Tag

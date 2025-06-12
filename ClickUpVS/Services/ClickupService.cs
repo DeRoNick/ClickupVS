@@ -80,6 +80,15 @@ namespace ClickUpVS.Services
 		{
 			var task = await _client.GetTaskAsync(taskId, cancellationToken);
 
+			task.Checklists = [.. task.Checklists.Select(x =>
+			{
+				x.Items = [.. x.Items.Select(y => {
+					y.ChecklistId = x.Id;
+					return y;
+				})];
+				return x;
+			})];
+
 			task.Comments = [.. (await _client.GetTaskCommentsAsync(taskId, cancellationToken)).Comments.Select(x => {
 				x.Deletable = x.User.Id == CurrentUser.Id;
 				return x;
@@ -106,6 +115,15 @@ namespace ClickUpVS.Services
 		public async Task DeleteCommentAsync(string commentId, CancellationToken cancellationToken = default)
 		{
 			await _client.DeleteCommentAsync(commentId, cancellationToken);
+		}
+
+		public async Task UpdateChecklistItemAsync(string checklistId, string checklistItemId, ChecklistItem item, CancellationToken cancellationToken = default)
+		{
+			await _client.UpdateChecklistAsync(checklistId, checklistItemId, new()
+			{
+				Name = item.Name,
+				Resolved = item.Resolved
+			}, cancellationToken);
 		}
 
 	}
