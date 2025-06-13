@@ -70,6 +70,7 @@
     <Compile Include="Services\Clients\Models\GetTasksResponse.cs" />
     <Compile Include="Services\Clients\Models\GetWorkspaces.cs" />
     <Compile Include="Services\Clients\Models\UpdateChecklistItem.cs" />
+    <Compile Include="Services\Clients\Models\UpdateTask.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

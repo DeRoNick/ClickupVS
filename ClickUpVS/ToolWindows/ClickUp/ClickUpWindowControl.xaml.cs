@@ -2,6 +2,7 @@
 using ClickUpVS.Services;
 using ClickUpVS.Views.Models;
 using Microsoft.VisualStudio.Threading;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,6 +25,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnCheckChanged += OnCheckChanged;
 			ProjectsList.TaskDetailView.OnAddTaskItem += OnAddTaskItem;
 			ProjectsList.TaskDetailView.OnAddTask += OnAddTask;
+			ProjectsList.TaskDetailView.OnStatusChanged += OnStatusChanged;
 		}
 
 		private async Task InitializeAsync()
@@ -40,6 +42,29 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnStatusChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (sender is ComboBox comboBox && comboBox.DataContext is TaskDetail taskDetail && e.AddedItems.Count > 0)
+			{
+				if (e.AddedItems[0] is TaskStatus selectedStatus && taskDetail.Status.Status != selectedStatus.Status)
+				{
+					ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+					{
+						try
+						{
+							await _service.UpdateTaskStatusAsync(taskDetail.Id, selectedStatus.Status);
+							taskDetail.Status = selectedStatus;
+						}
+						catch (Exception ex)
+						{
+							comboBox.SelectedItem = taskDetail.Status;
+							await VS.MessageBox.ShowErrorAsync(Name, $"Failed to update task status: {ex.Message}");
+						}
+					}).FireAndForget();
+				}
 			}
 		}
 
@@ -144,10 +169,15 @@ namespace ClickUpVS
 				{
 					var taskDetail = await _service.GetTaskAsync(taskItem.Id);
 
+					var statuses = await _service.GetAvailableStatusesAsync(taskDetail.Space.Id);
+					statuses = statuses.Where(x => x.Status != taskDetail.Status.Status).ToList();
+
 					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 					var vm = ProjectsList.DataContext as ProjectsListViewModel;
 
+					taskDetail.AvailableStatuses = statuses;
+					taskDetail.AvailableStatuses.Add(taskDetail.Status); // for some reason the combo box only works if the selected object is in list, also why doesnt clickup do statuses by id?? like why have status id if youre only gonna go by name
 					vm.SelectedTask = taskDetail;
 					ProjectsList.TaskDetailView.DataContext = taskDetail;
 					ProjectsList.DetailedView.Visibility = Visibility.Visible;

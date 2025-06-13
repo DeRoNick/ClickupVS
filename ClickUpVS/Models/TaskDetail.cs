@@ -7,14 +7,27 @@ using System.Runtime.CompilerServices;
 
 namespace ClickUpVS.Models
 {
-	internal class TaskDetail
+	internal class TaskDetail : INotifyPropertyChanged
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string TextContent { get; set; }
 		public string Description { get; set; }
 		public int? TimeEstimate { get; set; }
-		public TaskStatus Status { get; set; }
+
+		private TaskStatus status;
+		public TaskStatus Status
+		{
+			get
+			{
+				return status;
+			}
+			set
+			{
+				status = value;
+				NotifyPropertyChanged();
+			}
+		}
 
 		[JsonConverter(typeof(UnixMillisecondDateTimeConverter))]
 		public DateTime? DueDate { get; set; }
@@ -34,6 +47,27 @@ namespace ClickUpVS.Models
 		public ObservableCollection<Subtask> Subtasks { get; set; }
 
 		public ListPreviewModel List { get; set; }
+		public SpaceModel Space { get; set; }
+
+		[JsonIgnore]
+		public List<TaskStatus> AvailableStatuses { get; set; }
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+
+	internal class SpaceModel
+	{
+		public string Id { get; set; }
+	}
+
+	internal class ListModel
+	{
+		public string Id { get; set; }
 	}
 
 	internal class ListPreviewModel

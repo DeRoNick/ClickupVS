@@ -54,5 +54,11 @@ namespace ClickUpVS.Services.Clients
 
 		[Post("list/{listId}/task")]
 		public Task<TaskDetail> CreateTaskAsync([Path] string listId, [Body] CreateTaskRequest request, CancellationToken cancellationToken = default);
+
+		[Put("task/{taskId}")]
+		public Task UpdateTaskAsync([Path] string taskId, [Body] UpdateTaskRequest request, CancellationToken cancellationToken = default);
+
+		[Get("space/{spaceId}")]
+		public Task<Space> GetSpaceAsync([Path] string spaceId, CancellationToken cancellationToken = default);
 	}
 }

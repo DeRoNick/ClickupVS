@@ -11,6 +11,8 @@ namespace ClickUpVS.Models
 		public List<Folder> Folders { get; set; }
 		public List<List> Lists { get; set; }
 
+		public List<TaskStatus> Statuses { get; set; }
+
 		public List<object> Children => [.. Folders.Cast<object>(), .. Lists];
 	}
 

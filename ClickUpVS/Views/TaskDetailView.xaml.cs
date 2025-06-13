@@ -26,6 +26,7 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnCheckChanged;
 		public event EventHandler<RoutedEventArgs> OnAddTaskItem;
 		public event EventHandler<RoutedEventArgs> OnAddTask;
+		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> OnStatusChanged;
 
 		public TaskDetailView()
 		{
@@ -83,5 +84,10 @@ namespace ClickUpVS.Views
 		{
 			OnAddTask?.Invoke(sender, e);
 		}
-	}
+
+		private void StatusComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			OnStatusChanged?.Invoke(sender, e);
+		}
+    }
 }

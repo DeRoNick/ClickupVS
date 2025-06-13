@@ -143,5 +143,20 @@ namespace ClickUpVS.Services
 			return await _client.CreateTaskAsync(listId, request, cancellationToken);
 		}
 
+		public async Task UpdateTaskStatusAsync(string taskId, string status, CancellationToken cancellationToken = default)
+		{
+			await _client.UpdateTaskAsync(taskId, new()
+			{
+				Status = status
+			});
+		}
+
+		public async Task<List<Models.TaskStatus>> GetAvailableStatusesAsync(string spaceId, CancellationToken cancellationToken = default)
+		{
+			var result = await _client.GetSpaceAsync(spaceId, cancellationToken);
+
+			return result.Statuses;
+		}
+
 	}
 }

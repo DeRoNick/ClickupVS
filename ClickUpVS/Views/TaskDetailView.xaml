@@ -28,9 +28,27 @@
                 <UniformGrid Columns="2" Margin="0,0,0,0">
                     <StackPanel Margin="0,0,10,10">
                         <TextBlock Text="Status" FontWeight="Bold" Foreground="Gray"/>
-                        <Border HorizontalAlignment="Left" Background="{Binding Status.Color}" Padding="6,2" CornerRadius="4" Margin="0,3,0,0">
-                            <TextBlock Text="{Binding Status.Status}" Foreground="White" FontWeight="Bold"/>
-                        </Border>
+                        <ComboBox x:Name="StatusComboBox"
+                              ItemsSource="{Binding AvailableStatuses}" 
+                              SelectedItem="{Binding Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="StatusComboBox_SelectionChanged"
+                              Background="#1E1E1E"
+                              BorderThickness="0"
+                              Padding="0"
+                              HorizontalAlignment="Left"
+                              Foreground="White"
+                              FontWeight="Bold"
+                              FontSize="13"
+                              Cursor="Hand"
+                              Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="models:TaskStatus">
+                                    <Border VerticalAlignment="Center" HorizontalAlignment="Left" Background="{Binding Color}" Padding="6,2" CornerRadius="4" Margin="0,3,0,0">
+                                        <TextBlock Text="{Binding Status}" Foreground="White" FontWeight="Bold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
 
                     <StackPanel Margin="0,0,10,10">
