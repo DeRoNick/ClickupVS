@@ -48,6 +48,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Space.cs" />
+    <Compile Include="Models\Subtask.cs" />
     <Compile Include="Models\TaskDetail.cs" />
     <Compile Include="Models\TaskItem.cs" />
     <Compile Include="Models\User.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Services\ClickupService.cs" />
     <Compile Include="Services\Clients\ClickupClient.cs" />
     <Compile Include="Services\Clients\Models\AuthorizedUser.cs" />
+    <Compile Include="Services\Clients\Models\CreateTask.cs" />
     <Compile Include="Services\Clients\Models\CreateTaskCommentRequest.cs" />
     <Compile Include="Services\Clients\Models\GetFolderlessLists.cs" />
     <Compile Include="Services\Clients\Models\GetFolders.cs" />
@@ -74,6 +76,7 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\CountToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\UnixMillisecondDateTimeConverter.cs" />
     <Compile Include="Views\Extensions\TextBoxHelper.cs" />

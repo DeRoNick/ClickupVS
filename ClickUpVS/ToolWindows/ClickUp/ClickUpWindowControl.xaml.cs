@@ -23,6 +23,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnDeleteComment += OnDeleteComment;
 			ProjectsList.TaskDetailView.OnCheckChanged += OnCheckChanged;
 			ProjectsList.TaskDetailView.OnAddTaskItem += OnAddTaskItem;
+			ProjectsList.TaskDetailView.OnAddTask += OnAddTask;
 		}
 
 		private async Task InitializeAsync()
@@ -39,6 +40,35 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnAddTask(object sender, RoutedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(ProjectsList.TaskDetailView.CreateTaskTextBox.Text) && ProjectsList.TaskDetailView.DataContext is TaskDetail detail)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var listId = detail.List.Id;
+
+					var result = await _service.CreateTaskAsync(listId, new()
+					{
+						Name = ProjectsList.TaskDetailView.CreateTaskTextBox.Text,
+						Parent = detail.Id
+					});
+
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					ProjectsList.TaskDetailView.CreateTaskTextBox.Text = "";
+					detail.Subtasks.Add(new()
+					{
+						Id = result.Id,
+						Name = result.Name,
+						Status = result.Status,
+						Priority = result.Priority,
+					});
+
+				}).FireAndForget();
 			}
 		}
 

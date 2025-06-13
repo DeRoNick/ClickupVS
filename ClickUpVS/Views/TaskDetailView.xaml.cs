@@ -25,6 +25,7 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnDeleteComment;
 		public event EventHandler<RoutedEventArgs> OnCheckChanged;
 		public event EventHandler<RoutedEventArgs> OnAddTaskItem;
+		public event EventHandler<RoutedEventArgs> OnAddTask;
 
 		public TaskDetailView()
 		{
@@ -76,6 +77,11 @@ namespace ClickUpVS.Views
 		private void AddTaskItem_Click(object sender, RoutedEventArgs e)
 		{
 			OnAddTaskItem?.Invoke(sender, e);
+		}
+
+		private void AddTask_Click(object sender, RoutedEventArgs e)
+		{
+			OnAddTask?.Invoke(sender, e);
 		}
 	}
 }

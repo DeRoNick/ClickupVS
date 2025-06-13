@@ -78,7 +78,7 @@ namespace ClickUpVS.Services
 
 		public async Task<TaskDetail> GetTaskAsync(string taskId, CancellationToken cancellationToken = default)
 		{
-			var task = await _client.GetTaskAsync(taskId, cancellationToken);
+			var task = await _client.GetTaskAsync(taskId, includeSubtasks: "true", cancellationToken); // their api doesnt accept True as a boolean, and im too lazy to write a converter
 
 			task.Checklists = [.. task.Checklists.Select(x =>
 			{
@@ -136,6 +136,11 @@ namespace ClickUpVS.Services
 			item.ChecklistId = checklistId;
 
 			return item;
+		}
+
+		public async Task<TaskDetail> CreateTaskAsync(string listId, CreateTaskRequest request, CancellationToken cancellationToken = default)
+		{
+			return await _client.CreateTaskAsync(listId, request, cancellationToken);
 		}
 
 	}

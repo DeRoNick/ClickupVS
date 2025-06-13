@@ -13,7 +13,7 @@ namespace ClickUpVS.Models
 		public string Name { get; set; }
 		public string TextContent { get; set; }
 		public string Description { get; set; }
-		public int TimeEstimate { get; set; }
+		public int? TimeEstimate { get; set; }
 		public TaskStatus Status { get; set; }
 
 		[JsonConverter(typeof(UnixMillisecondDateTimeConverter))]
@@ -30,6 +30,15 @@ namespace ClickUpVS.Models
 		public List<User> Assignees { get; set; }
 		public PriorityModel Priority { get; set; }
 		public List<Attachment> Attachments { get; set; }
+
+		public ObservableCollection<Subtask> Subtasks { get; set; }
+
+		public ListPreviewModel List { get; set; }
+	}
+
+	internal class ListPreviewModel
+	{
+		public string Id { get; set; }
 	}
 
 	internal class Attachment

@@ -32,7 +32,7 @@ namespace ClickUpVS.Services.Clients
 		public Task<GetListsResponse> GetListsAsync([Path] string folderId, CancellationToken cancellationToken = default);
 
 		[Get("task/{taskId}")]
-		public Task<TaskDetail> GetTaskAsync([Path] string taskId, CancellationToken cancellationToken = default);
+		public Task<TaskDetail> GetTaskAsync([Path] string taskId, [Query("include_subtasks", Name = "include_subtasks")] string includeSubtasks, CancellationToken cancellationToken = default);
 
 		[Get("task/{taskId}/comment")]
 		public Task<GetTaskComments> GetTaskCommentsAsync([Path] string taskId, CancellationToken cancellationToken = default);
@@ -51,5 +51,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Post("checklist/{checklistId}/checklist_item")]
 		public Task<CreateChecklistItemResponse> CreateChecklistItemAsync([Path] string checklistId, [Body] CreateChecklistItemRequest request, CancellationToken cancellationToken = default);
+
+		[Post("list/{listId}/task")]
+		public Task<TaskDetail> CreateTaskAsync([Path] string listId, [Body] CreateTaskRequest request, CancellationToken cancellationToken = default);
 	}
 }

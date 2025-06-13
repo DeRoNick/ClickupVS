@@ -8,9 +8,11 @@
              xmlns:models="clr-namespace:ClickUpVS.Models"
              xmlns:extensions="clr-namespace:ClickUpVS.Views.Extensions"
              xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+             MaxHeight="800"
              Background="#1E1E1E">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -41,7 +43,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="models:User">
-                                    <Grid>
+                                    <Grid Margin="0 3 0 0">
                                         <Ellipse Width="25" Height="25" Fill="#6c6cff" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding Initials}" 
                                            Foreground="White" 
@@ -125,13 +127,98 @@
                 </ItemsControl>
 
                 <TextBlock Text="Subtasks" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
+                <Grid Background="#252525">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Name" Foreground="Gray" Grid.Column="0" Margin="5 0 0 0"/>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0 0 5 0" Text="Assignee" Foreground="Gray" Grid.Column="0"/>
+                        <TextBlock Margin="0 0 5 0" Text="Priority" Foreground="Gray" Grid.Column="1"/>
+                        <TextBlock Text="Due date" Foreground="Gray" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+
                 <ItemsControl ItemsSource="{Binding Subtasks}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsDone}" Foreground="White"/>
+                        <DataTemplate DataType="models:Subtask">
+                            <Border Background="#1E1E1E" BorderBrush="#333" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                        <Border HorizontalAlignment="Left" Background="{Binding Status.Color}" Padding="6,2" CornerRadius="4" Margin="5 5">
+                                            <TextBlock Text="{Binding Status.Status}" Foreground="White" FontWeight="Bold"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <ContentControl HorizontalAlignment="Center" Grid.Column="1" Content="{Binding Assignees[0]}" Visibility="{Binding Assignees, Converter={StaticResource CountToVisibilityConverter}}">
+                                        <ContentControl.ContentTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Ellipse Width="20" Height="20" Fill="#6c6cff"/>
+                                                    <TextBlock Text="{Binding Initials}"
+                                                   Foreground="White"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="11"
+                                                   ToolTip="{Binding Username}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ContentControl.ContentTemplate>
+                                    </ContentControl>
+
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Border Width="10" Height="10" Background="{Binding Priority.Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Priority.Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Column="3"
+                                   Text="{Binding DueDate, StringFormat='{}{0:MMM dd}'}" VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <Border Background="#1A1A1A" Padding="10,6" BorderBrush="#333" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Text="+" FontSize="16" Foreground="Gray" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        
+                        <TextBox Grid.Column="1" x:Name="CreateTaskTextBox" extensions:TextBoxHelper.Placeholder="add task" Background="Transparent" Foreground="Gray" FontSize="13"/>
+                        
+                        <Button x:Name="AddTask" Grid.Column="2" Padding="10 4" Background="#1E1E1E" Click="AddTask_Click">
+                            <imaging:CrispImage Width="10" Height="10" Moniker="{x:Static catalog:KnownMonikers.Send}"/>
+                        </Button>
+                    </Grid>
+                </Border>
 
                 <TextBlock Text="Checklists" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
                 <ItemsControl ItemsSource="{Binding Checklists}">
@@ -202,7 +289,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="600">
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="700">
                         <ItemsControl ItemsSource="{Binding Comments}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type models:Comment}">
