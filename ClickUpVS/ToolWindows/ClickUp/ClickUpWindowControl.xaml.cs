@@ -32,6 +32,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnSubtaskButtonClicked += OnSubtaskButtonClicked;
 			ProjectsList.BackButtonClicked += OnBackButtonClicked;
 			ProjectsList.TaskDetailView.OnSaveDescriptionClicked += OnSaveDescriptionClicked;
+			ProjectsList.TaskDetailView.OnSaveNameClicked += OnSaveNameClicked;
 		}
 
 		private async Task InitializeAsync()
@@ -51,6 +52,24 @@ namespace ClickUpVS
 			}
 		}
 
+		private void OnSaveNameClicked(object sender, RoutedEventArgs e)
+		{
+			if (sender is Button button && button.DataContext is TaskDetail task)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					try
+					{
+						await _service.UpdateTaskNameAsync(task);
+					}
+					catch (ApiException ex)
+					{
+						await VS.MessageBox.ShowErrorAsync("Couldnt save name", ex.Message);
+					}
+				}).FireAndForget();
+			}
+		}
+
 		private void OnSaveDescriptionClicked(object sender, RoutedEventArgs e)
 		{
 			if (sender is Button button && button.DataContext is TaskDetail task)
@@ -59,8 +78,6 @@ namespace ClickUpVS
 				{
 					try
 					{
-						var description = task.Description;
-
 						await _service.UpdateTaskDescriptionAsync(task);
 					}
 					catch (ApiException ex)

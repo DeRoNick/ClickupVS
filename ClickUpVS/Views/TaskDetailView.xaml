@@ -21,10 +21,17 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="0" Padding="0 0 10 0" Margin="10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                <Grid Margin="0 0 0 5">
+                    <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap"
+                        Background="#2a2a2a" Foreground="White" BorderThickness="0" Padding="6"/>
 
+                    <Button Click="SaveName_Click" Width="32" MinWidth="0" Height="12" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 0" Background="#1E1E1E" ToolTip="Save Name" Visibility="{Binding NameChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <imaging:CrispImage Width="10" Height="10" Moniker="{x:Static catalog:KnownMonikers.Send}"/>
+                    </Button>
+                </Grid>
+                
                 <UniformGrid Columns="2" Margin="0,0,0,0">
                     <StackPanel Margin="0,0,10,10">
                         <TextBlock Text="Status" FontWeight="Bold" Foreground="Gray"/>

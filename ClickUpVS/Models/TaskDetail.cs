@@ -13,6 +13,32 @@ namespace ClickUpVS.Models
 		private string _initialDescription;
 		private bool descriptionChanged = false;
 
+		private string _name;
+		private string _initialName;
+		private bool nameChanged = false;
+
+		public string InitialTitle
+		{
+			get { return _initialName; }
+			set { _initialName = value; }
+		}
+
+		public bool NameChanged
+		{
+			get
+			{
+				return nameChanged;
+			}
+			set
+			{
+				if (nameChanged != value)
+				{
+					nameChanged = value;
+					NotifyPropertyChanged();
+				}
+			}
+		}
+
 		public string InitialDescription
 		{
 			get { return _initialDescription; }
@@ -37,7 +63,18 @@ namespace ClickUpVS.Models
 		}
 
 		public string Id { get; set; }
-		public string Name { get; set; }
+		public string Name
+		{
+			get { return _name; }
+			set
+			{
+				if (_name != value)
+				{
+					_name = value;
+					NameChanged = _name != _initialName;
+				}
+			}
+		}
 		public string TextContent { get; set; }
 		public string Description
 		{

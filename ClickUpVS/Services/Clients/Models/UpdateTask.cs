@@ -8,5 +8,8 @@ namespace ClickUpVS.Services.Clients.Models
 
 		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 		public string Status { get; set; }
+
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+		public string Name { get; set; }
 	}
 }

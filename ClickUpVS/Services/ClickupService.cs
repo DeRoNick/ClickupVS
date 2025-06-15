@@ -82,6 +82,9 @@ namespace ClickUpVS.Services
 			task.InitialDescription = task.Description;
 			task.DescriptionChanged = false;
 
+			task.InitialTitle = task.Name;
+			task.NameChanged = false;
+
 			task.Checklists = [.. task.Checklists.Select(x =>
 			{
 				x.Items = [.. x.Items.Select(y => {
@@ -170,5 +173,14 @@ namespace ClickUpVS.Services
 			task.DescriptionChanged = false;
 		}
 
+		public async Task UpdateTaskNameAsync(TaskDetail task, CancellationToken cancellationToken = default)
+		{
+			await _client.UpdateTaskAsync(task.Id, new()
+			{
+				Name = task.Name
+			}, cancellationToken);
+
+			task.NameChanged = false;
+		}
 	}
 }
