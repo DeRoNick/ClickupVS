@@ -1,5 +1,6 @@
 ﻿using ClickUpVS.Models;
 using ClickUpVS.Services;
+using ClickUpVS.Views;
 using ClickUpVS.Views.Models;
 using Microsoft.VisualStudio.Threading;
 using RestEase;
@@ -36,6 +37,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnSaveNameClicked += OnSaveNameClicked;
 			ProjectsList.TaskDetailView.OnPriorityChanged += OnPriorityChanged;
 			ProjectsList.CreateTaskClicked += OnCreateTask;
+			ProjectsList.TaskDetailView.OnCreateChecklistClicked += OnCreateChecklist;
 		}
 
 		private async Task InitializeAsync()
@@ -52,6 +54,22 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnCreateChecklist(object sender, RoutedEventArgs e)
+		{
+			var name = ProjectsList.TaskDetailView.CreateChecklistTextBox.Text;
+			if (sender is Button button && button.Tag is string taskId && !string.IsNullOrEmpty(name))
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var checklist = await _service.CreateChecklistAsync(taskId, name);
+
+					var task = ProjectsList.TaskDetailView.DataContext as TaskDetail;
+					ProjectsList.TaskDetailView.CreateChecklistTextBox.Text = string.Empty;
+					task.Checklists.Add(checklist);
+				}).FireAndForget();
 			}
 		}
 

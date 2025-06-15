@@ -31,6 +31,7 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnSubtaskButtonClicked;
 		public event EventHandler<RoutedEventArgs> OnSaveDescriptionClicked;
 		public event EventHandler<RoutedEventArgs> OnSaveNameClicked;
+		public event EventHandler<RoutedEventArgs> OnCreateChecklistClicked;
 
 		private static readonly List<PriorityModel> priorityModels = [
 			new() {
@@ -137,6 +138,11 @@ namespace ClickUpVS.Views
 		private void PriorityComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			OnPriorityChanged?.Invoke(sender, e);
+		}
+
+		private void CreateChecklistButton_Click(object sender, RoutedEventArgs e)
+		{
+			OnCreateChecklistClicked?.Invoke(sender, e);
 		}
 	}
 }

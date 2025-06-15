@@ -63,5 +63,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("list/{listId}")]
 		public Task<List> GetListAsync([Path] string listId, CancellationToken cancellationToken = default);
+
+		[Post("task/{taskId}/checklist")]
+		public Task<CreateChecklistResponse> CreateChecklistAsync([Path] string taskId, [Body] CreateChecklistRequest request, CancellationToken cancellationToken = default);
 	}
 }

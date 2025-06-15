@@ -115,7 +115,7 @@ namespace ClickUpVS.Models
 		public int? Points { get; set; }
 		public List<Tag> Tags { get; set; }
 		public string Url { get; set; }
-		public List<Checklist> Checklists { get; set; }
+		public ObservableCollection<Checklist> Checklists { get; set; }
 
 		public ObservableCollection<Comment> Comments { get; set; }
 		public List<User> Assignees { get; set; }

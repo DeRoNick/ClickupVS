@@ -60,6 +60,7 @@
     <Compile Include="Services\ClickupService.cs" />
     <Compile Include="Services\Clients\ClickupClient.cs" />
     <Compile Include="Services\Clients\Models\AuthorizedUser.cs" />
+    <Compile Include="Services\Clients\Models\CreateChecklist.cs" />
     <Compile Include="Services\Clients\Models\CreateTask.cs" />
     <Compile Include="Services\Clients\Models\CreateTaskCommentRequest.cs" />
     <Compile Include="Services\Clients\Models\GetFolderlessLists.cs" />
