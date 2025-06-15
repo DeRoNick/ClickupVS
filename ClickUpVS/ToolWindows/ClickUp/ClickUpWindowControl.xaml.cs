@@ -378,9 +378,22 @@ namespace ClickUpVS
 			{
 				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
 				{
-					var list = await _service.GetListWithTasksAsync(folder.Id);
+					var list = await _service.GetListsWithTasksAsync(folder.Id);
 
 					var viewModel = new ProjectsListViewModel(list);
+
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					ProjectsList.DataContext = viewModel;
+				}).FireAndForget();
+			}
+			else if (item is List list)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					var listWithTasks = await _service.GetListWithTasksAsync(list.Id);
+
+					var viewModel = new ProjectsListViewModel([listWithTasks]);
 
 					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

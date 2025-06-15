@@ -52,7 +52,7 @@ namespace ClickUpVS.Services
 			return spaces;
 		}
 
-		public async Task<List<List>> GetListWithTasksAsync(string folderId, CancellationToken cancellationToken = default)
+		public async Task<List<List>> GetListsWithTasksAsync(string folderId, CancellationToken cancellationToken = default)
 		{
 			var lists = await GetListsAsync(folderId, cancellationToken);
 
@@ -64,6 +64,15 @@ namespace ClickUpVS.Services
 			}
 
 			return lists;
+		}
+
+		public async Task<List> GetListWithTasksAsync(string listId, CancellationToken cancellationToken = default)
+		{
+			var list = await _client.GetListAsync(listId, cancellationToken);
+
+			list.Tasks = await GetTasksAsync(listId, cancellationToken);
+
+			return list;
 		}
 
 		public async Task<List<List>> GetListsAsync(string folderId, CancellationToken cancellationToken = default)
