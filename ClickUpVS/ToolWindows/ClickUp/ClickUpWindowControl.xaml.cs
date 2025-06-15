@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ClickUpVS
 {
@@ -34,6 +35,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnSaveDescriptionClicked += OnSaveDescriptionClicked;
 			ProjectsList.TaskDetailView.OnSaveNameClicked += OnSaveNameClicked;
 			ProjectsList.TaskDetailView.OnPriorityChanged += OnPriorityChanged;
+			ProjectsList.CreateTaskClicked += OnCreateTask;
 		}
 
 		private async Task InitializeAsync()
@@ -51,6 +53,52 @@ namespace ClickUpVS
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
 			}
+		}
+
+		private void OnCreateTask(object sender, RoutedEventArgs e)
+		{
+			if (sender is Button button && button.Tag is string projectId)
+			{
+				var textBox = FindChild<TextBox>(ProjectsList, x => x.Name == "CreateTaskTextBox" && x.Tag is string s && s == projectId);
+				if (textBox is null || string.IsNullOrEmpty(textBox.Text))
+					return;
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					try
+					{
+						var task = await _service.CreateTaskAsync(projectId, new() { Name = textBox.Text });
+
+						var vm = ProjectsList.DataContext as ProjectsListViewModel;
+						vm.AddTask(task);
+						textBox.Text = string.Empty;
+					}
+					catch (ApiException ex)
+					{
+						await VS.MessageBox.ShowErrorAsync("Couldnt create task", ex.Message);
+					}
+				}).FireAndForget();
+			}
+		}
+
+		private static T FindChild<T>(DependencyObject parent, Func<T, bool> predicate = null) where T : DependencyObject
+		{
+			if (parent == null) return null;
+
+			int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+			for (int i = 0; i < childrenCount; i++)
+			{
+				var child = VisualTreeHelper.GetChild(parent, i);
+				if (child is T typedChild && (predicate == null || predicate(typedChild)))
+				{
+					return typedChild;
+				}
+
+				var result = FindChild(child, predicate);
+				if (result != null)
+					return result;
+			}
+
+			return null;
 		}
 
 		private void OnSaveNameClicked(object sender, RoutedEventArgs e)

@@ -24,6 +24,7 @@ namespace ClickUpVS.Views
 	{
 		public event EventHandler<RoutedEventArgs> ButtonClicked;
 		public event EventHandler<RoutedEventArgs> BackButtonClicked;
+		public event EventHandler<RoutedEventArgs> CreateTaskClicked;
 
 		public ProjectsList()
 		{
@@ -39,5 +40,10 @@ namespace ClickUpVS.Views
 		{
 			BackButtonClicked?.Invoke(sender, e);
 		}
+
+		private void CreateTask_Click(object sender, RoutedEventArgs e)
+		{
+			CreateTaskClicked?.Invoke(sender, e);
+        }
     }
 }

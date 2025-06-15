@@ -7,6 +7,7 @@
              xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
              xmlns:local="clr-namespace:ClickUpVS.Views"
              xmlns:models="clr-namespace:ClickUpVS.Views.Models"
+             xmlns:extensions="clr-namespace:ClickUpVS.Views.Extensions"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -18,31 +19,31 @@
         </Grid.ColumnDefinitions>
 
         <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Visibility="Visible" x:Name="ListView">
-            <ItemsControl ItemsSource="{Binding Projects}">
+            <ItemsControl ItemsSource="{Binding Projects}" x:Name="Projects">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10" CornerRadius="4">
-                            <Expander Header="{Binding Name}" IsExpanded="{Binding IsExpanded}" Background="#2a2a2a" Foreground="White" FontWeight="Bold">
-                                <ItemsControl ItemsSource="{Binding StatusGroups}" Margin="10,5,0,0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type models:StatusGroup}">
-                                            <Expander IsExpanded="{Binding IsExpanded}" Margin="0,0,0,10">
-                                                <Expander.Header>
-                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <Border Background="{Binding Color}" Padding="4" CornerRadius="3" Margin="0,0,5,0">
-                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                                <TextBlock Text="⬤" Foreground="White" Margin="0,0,3,0"/>
-                                                                <TextBlock Text="{Binding Name}" Foreground="White"/>
-                                                            </StackPanel>
-                                                        </Border>
-                                                    </StackPanel>
-                                                </Expander.Header>
+                            <StackPanel Orientation="Vertical">
+                                <Expander Header="{Binding Name}" IsExpanded="{Binding IsExpanded}" Background="#2a2a2a" Foreground="White" FontWeight="Bold">
+                                    <ItemsControl ItemsSource="{Binding StatusGroups}" Margin="10,5,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type models:StatusGroup}">
+                                                <Expander IsExpanded="{Binding IsExpanded}" Margin="0,0,0,10">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <Border Background="{Binding Color}" Padding="4" CornerRadius="3" Margin="0,0,5,0">
+                                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                    <TextBlock Text="⬤" Foreground="White" Margin="0,0,3,0"/>
+                                                                    <TextBlock Text="{Binding Name}" Foreground="White"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </Expander.Header>
 
-                                                <ItemsControl ItemsSource="{Binding Tasks}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <!--<TextBlock Text="{Binding Name}" Foreground="White"/>-->
-                                                            <Button Content="{Binding Name}"
+                                                    <ItemsControl ItemsSource="{Binding Tasks}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="{Binding Name}"
                                                                     HorizontalAlignment="Left"
                                                                     Cursor="Hand"
                                                                     Background="Transparent"
@@ -50,14 +51,32 @@
                                                                     Click="Button_Click"
                                                                     Margin="0 8 0 0"
                                                                     Tag="{Binding}"/>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </Expander>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </Expander>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </Expander>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                                <Border Background="#2a2a2a" Padding="10,6" BorderBrush="#333" BorderThickness="0,1,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="+" FontSize="16" Foreground="Gray" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                        <TextBox Tag="{Binding Id}" Grid.Column="1" x:Name="CreateTaskTextBox" extensions:TextBoxHelper.Placeholder="create task" Background="Transparent" Foreground="Gray" FontSize="13"/>
+
+                                        <Button Tag="{Binding Id}" x:Name="CreateTask" Grid.Column="2" Padding="10 4" Background="#1E1E1E" Click="CreateTask_Click">
+                                            <imaging:CrispImage Width="10" Height="10" Moniker="{x:Static catalog:KnownMonikers.Send}"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

@@ -1,5 +1,6 @@
 ﻿using ClickUpVS.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ClickUpVS.Views.Models
@@ -9,7 +10,7 @@ namespace ClickUpVS.Views.Models
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Color { get; set; }
-		public List<TaskItem> Tasks { get; set; }
+		public ObservableCollection<TaskItem> Tasks { get; set; }
 		public bool IsExpanded { get; set; } = true;
 	}
 
@@ -17,7 +18,7 @@ namespace ClickUpVS.Views.Models
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
-		public List<StatusGroup> StatusGroups { get; set; }
+		public ObservableCollection<StatusGroup> StatusGroups { get; set; }
 		public bool IsExpanded { get; set; } = true;
 	}
 
@@ -40,6 +41,37 @@ namespace ClickUpVS.Views.Models
 						Tasks = [.. x.Select(x => x)]
 					})]
 			})];
+		}
+
+		public void AddTask(TaskDetail task)
+		{
+			var projectModel = Projects.First(x => x.Id == task.List.Id);
+
+			var statusGroup = projectModel.StatusGroups.FirstOrDefault(x => x.Id == task.Status.Id);
+
+			if (statusGroup is null)
+			{
+				projectModel.StatusGroups.Add(new()
+				{
+					Id = task.Status.Id,
+					Name = task.Status.Status,
+					Color = task.Status.Color,
+					Tasks = [new () {
+						Id = task.Id,
+						Name = task.Name,
+						Status = task.Status
+					}]
+				});
+			}
+			else
+			{
+				statusGroup.Tasks.Add(new()
+				{
+					Id = task.Id,
+					Name = task.Name,
+					Status = task.Status
+				});
+			}
 		}
 	}
 }
