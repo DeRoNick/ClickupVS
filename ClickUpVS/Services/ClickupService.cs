@@ -182,5 +182,13 @@ namespace ClickUpVS.Services
 
 			task.NameChanged = false;
 		}
+
+		public async Task UpdateTaskPriorityAsync(string taskId, Priorities priority, CancellationToken cancellationToken = default)
+		{
+			await _client.UpdateTaskAsync(taskId, new()
+			{
+				Priority = priority
+			}, cancellationToken);
+		}
 	}
 }

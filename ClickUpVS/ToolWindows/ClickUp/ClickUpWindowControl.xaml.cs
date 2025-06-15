@@ -33,6 +33,7 @@ namespace ClickUpVS
 			ProjectsList.BackButtonClicked += OnBackButtonClicked;
 			ProjectsList.TaskDetailView.OnSaveDescriptionClicked += OnSaveDescriptionClicked;
 			ProjectsList.TaskDetailView.OnSaveNameClicked += OnSaveNameClicked;
+			ProjectsList.TaskDetailView.OnPriorityChanged += OnPriorityChanged;
 		}
 
 		private async Task InitializeAsync()
@@ -137,6 +138,29 @@ namespace ClickUpVS
 				ProjectsList.TaskDetailView.DataContext = taskDetail;
 			}
 
+		}
+
+		private void OnPriorityChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (sender is ComboBox comboBox && comboBox.DataContext is TaskDetail taskDetail && e.AddedItems.Count > 0)
+			{
+				if (e.AddedItems[0] is PriorityModel model && taskDetail.Priority != model)
+				{
+					ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+					{
+						try
+						{
+							await _service.UpdateTaskPriorityAsync(taskDetail.Id, model.Priority);
+							taskDetail.Priority = model;
+						}
+						catch (ApiException ex)
+						{
+							comboBox.SelectedItem = taskDetail.Priority;
+							await VS.MessageBox.ShowErrorAsync("Failed to change priority", ex.Message);
+						}
+					}).FireAndForget();
+				}
+			}
 		}
 
 		private void OnStatusChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

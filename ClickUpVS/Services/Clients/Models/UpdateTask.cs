@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ClickUpVS.Models;
+using Newtonsoft.Json;
 
 namespace ClickUpVS.Services.Clients.Models
 {
@@ -11,5 +12,8 @@ namespace ClickUpVS.Services.Clients.Models
 
 		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 		public string Name { get; set; }
+
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+		public Priorities? Priority { get; set; }
 	}
 }

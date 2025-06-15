@@ -27,9 +27,29 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnAddTaskItem;
 		public event EventHandler<RoutedEventArgs> OnAddTask;
 		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> OnStatusChanged;
+		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> OnPriorityChanged;
 		public event EventHandler<RoutedEventArgs> OnSubtaskButtonClicked;
 		public event EventHandler<RoutedEventArgs> OnSaveDescriptionClicked;
 		public event EventHandler<RoutedEventArgs> OnSaveNameClicked;
+
+		private static readonly List<PriorityModel> priorityModels = [
+			new() {
+				Color = "#f50000",
+				Priority = Priorities.Urgent
+			},
+			new() {
+				Color = "#f8ae00",
+				Priority = Priorities.High
+			},
+			new() {
+				Color = "#6fddff",
+				Priority = Priorities.Normal
+			},
+			new() {
+				Color = "#d8d8d8",
+				Priority = Priorities.Low
+			}
+			];
 
 		public TaskDetailView()
 		{
@@ -107,6 +127,16 @@ namespace ClickUpVS.Views
 		private void SaveName_Click(object sender, RoutedEventArgs e)
 		{
 			OnSaveNameClicked?.Invoke(sender, e);
+		}
+
+		private void UserControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			PriorityComboBox.ItemsSource = priorityModels;
+		}
+
+		private void PriorityComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			OnPriorityChanged?.Invoke(sender, e);
 		}
 	}
 }

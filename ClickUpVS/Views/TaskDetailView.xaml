@@ -9,6 +9,7 @@
              xmlns:extensions="clr-namespace:ClickUpVS.Views.Extensions"
              xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              MaxHeight="800"
+             Loaded="UserControl_Loaded"
              Background="#1E1E1E">
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -98,10 +99,27 @@
 
                     <StackPanel Margin="0,0,10,10">
                         <TextBlock Text="Priority" FontWeight="Bold" Foreground="Gray"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Border Width="10" Height="10" Background="{Binding Priority.Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Priority.Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <ComboBox x:Name="PriorityComboBox"
+                              SelectedItem="{Binding Priority, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="PriorityComboBox_SelectionChanged"
+                              Background="#1E1E1E"
+                              BorderThickness="0"
+                              Padding="0"
+                              HorizontalAlignment="Left"
+                              Foreground="White"
+                              FontWeight="Bold"
+                              FontSize="13"
+                              Cursor="Hand"
+                              Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="models:PriorityModel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="10" Height="10" Background="{Binding Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
 
                 </UniformGrid>

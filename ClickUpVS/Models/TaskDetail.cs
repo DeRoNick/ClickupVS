@@ -119,7 +119,20 @@ namespace ClickUpVS.Models
 
 		public ObservableCollection<Comment> Comments { get; set; }
 		public List<User> Assignees { get; set; }
-		public PriorityModel Priority { get; set; }
+
+		private PriorityModel priority;
+		public PriorityModel Priority
+		{
+			get { return priority; }
+			set
+			{
+				if (priority != value)
+				{
+					priority = value;
+					NotifyPropertyChanged();
+				}
+			}
+		}
 		public List<Attachment> Attachments { get; set; }
 
 		public ObservableCollection<Subtask> Subtasks { get; set; }
@@ -162,10 +175,35 @@ namespace ClickUpVS.Models
 		public string QueryUrl { get; set; }
 	}
 
+	internal enum Priorities
+	{
+		Urgent = 1,
+		High = 2,
+		Normal = 3,
+		Low = 4
+	}
+
 	internal class PriorityModel
 	{
 		public string Color { get; set; }
-		public string Priority { get; set; }
+		public Priorities Priority { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			if (obj is PriorityModel model)
+			{
+				return model.Priority == this.Priority;
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			int hashCode = -1627276575;
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Color);
+			hashCode = hashCode * -1521134295 + Priority.GetHashCode();
+			return hashCode;
+		}
 	}
 
 	internal class Checklist : INotifyPropertyChanged
