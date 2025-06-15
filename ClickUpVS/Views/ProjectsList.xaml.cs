@@ -23,6 +23,7 @@ namespace ClickUpVS.Views
 	public partial class ProjectsList : UserControl
 	{
 		public event EventHandler<RoutedEventArgs> ButtonClicked;
+		public event EventHandler<RoutedEventArgs> BackButtonClicked;
 
 		public ProjectsList()
 		{
@@ -36,8 +37,7 @@ namespace ClickUpVS.Views
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
 		{
-			DetailedView.Visibility = Visibility.Collapsed;
-			ListView.Visibility = Visibility.Visible;
+			BackButtonClicked?.Invoke(sender, e);
 		}
     }
 }

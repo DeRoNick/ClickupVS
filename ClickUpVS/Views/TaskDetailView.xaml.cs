@@ -27,11 +27,13 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnAddTaskItem;
 		public event EventHandler<RoutedEventArgs> OnAddTask;
 		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> OnStatusChanged;
+		public event EventHandler<RoutedEventArgs> OnSubtaskButtonClicked;
 
 		public TaskDetailView()
 		{
 			InitializeComponent();
 		}
+
 
 		private void SendComment_Click(object sender, RoutedEventArgs e)
 		{
@@ -89,5 +91,10 @@ namespace ClickUpVS.Views
 		{
 			OnStatusChanged?.Invoke(sender, e);
 		}
-    }
+
+		private void SubtaskButton_Click(object sender, RoutedEventArgs e)
+		{
+			OnSubtaskButtonClicked?.Invoke(sender, e);
+		}
+	}
 }

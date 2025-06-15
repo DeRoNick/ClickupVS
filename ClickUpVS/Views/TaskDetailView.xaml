@@ -170,52 +170,59 @@
                 <ItemsControl ItemsSource="{Binding Subtasks}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="models:Subtask">
-                            <Border Background="#1E1E1E" BorderBrush="#333" BorderThickness="0,0,0,1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="40"/>
-                                        <ColumnDefinition Width="70"/>
-                                        <ColumnDefinition Width="50"/>
-                                    </Grid.ColumnDefinitions>
+                            <Button Click="SubtaskButton_Click"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="6 0 6 0"
+                                HorizontalContentAlignment="Stretch"
+                                Cursor="Hand">
+                                <Border Background="#1E1E1E" BorderBrush="#333" BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="70"/>
+                                            <ColumnDefinition Width="50"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                        <Border HorizontalAlignment="Left" Background="{Binding Status.Color}" Padding="6,2" CornerRadius="4" Margin="5 5">
-                                            <TextBlock Text="{Binding Status.Status}" Foreground="White" FontWeight="Bold"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" />
-                                    </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                            <Border HorizontalAlignment="Left" Background="{Binding Status.Color}" Padding="6,2" CornerRadius="4" Margin="5 5">
+                                                <TextBlock Text="{Binding Status.Status}" Foreground="White" FontWeight="Bold"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" />
+                                        </StackPanel>
 
-                                    <ContentControl HorizontalAlignment="Center" Grid.Column="1" Content="{Binding Assignees[0]}" Visibility="{Binding Assignees, Converter={StaticResource CountToVisibilityConverter}}">
-                                        <ContentControl.ContentTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Ellipse Width="20" Height="20" Fill="#6c6cff"/>
-                                                    <TextBlock Text="{Binding Initials}"
+                                        <ContentControl HorizontalAlignment="Center" Grid.Column="1" Content="{Binding Assignees[0]}" Visibility="{Binding Assignees, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <ContentControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Ellipse Width="20" Height="20" Fill="#6c6cff"/>
+                                                        <TextBlock Text="{Binding Initials}"
                                                    Foreground="White"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    FontSize="11"
                                                    ToolTip="{Binding Username}"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ContentControl.ContentTemplate>
-                                    </ContentControl>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ContentControl.ContentTemplate>
+                                        </ContentControl>
 
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Border Width="10" Height="10" Background="{Binding Priority.Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding Priority.Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    
-                                    <TextBlock Grid.Column="3"
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Border Width="10" Height="10" Background="{Binding Priority.Color}" CornerRadius="2" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Priority.Priority}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="3"
                                    Text="{Binding DueDate, StringFormat='{}{0:MMM dd}'}" VerticalAlignment="Center"
                                    Foreground="White"
                                    FontWeight="SemiBold"
                                    HorizontalAlignment="Center"/>
 
-                                </Grid>
-                            </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

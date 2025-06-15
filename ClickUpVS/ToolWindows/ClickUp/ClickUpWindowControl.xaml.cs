@@ -2,6 +2,7 @@
 using ClickUpVS.Services;
 using ClickUpVS.Views.Models;
 using Microsoft.VisualStudio.Threading;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ namespace ClickUpVS
 	{
 		private General _options;
 		private ClickupService _service;
+		private Stack<TaskDetail> _taskDetails = new();
 
 		public ClickUpWindowControl()
 		{
@@ -26,6 +28,8 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnAddTaskItem += OnAddTaskItem;
 			ProjectsList.TaskDetailView.OnAddTask += OnAddTask;
 			ProjectsList.TaskDetailView.OnStatusChanged += OnStatusChanged;
+			ProjectsList.TaskDetailView.OnSubtaskButtonClicked += OnSubtaskButtonClicked;
+			ProjectsList.BackButtonClicked += OnBackButtonClicked;
 		}
 
 		private async Task InitializeAsync()
@@ -43,6 +47,57 @@ namespace ClickUpVS
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
 			}
+		}
+
+		private void OnSubtaskButtonClicked(object sender, RoutedEventArgs e)
+		{
+			if (sender is Button button && button.DataContext is Subtask subtask)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					try
+					{
+						var task = await _service.GetTaskAsync(subtask.Id);
+
+						var statuses = await _service.GetAvailableStatusesAsync(task.Space.Id);
+						statuses = statuses.Where(x => x.Status != task.Status.Status).ToList();
+
+						await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+						var vm = ProjectsList.DataContext as ProjectsListViewModel;
+
+						task.AvailableStatuses = statuses;
+						task.AvailableStatuses.Add(task.Status);
+
+						_taskDetails.Push(vm.SelectedTask);
+						vm.SelectedTask = task;
+						ProjectsList.TaskDetailView.DataContext = task;
+					}
+					catch (Exception e)
+					{
+						await VS.MessageBox.ShowErrorAsync("Something Went Wrong", e.Message);
+					}
+				}).FireAndForget();
+			}
+		}
+
+		private void OnBackButtonClicked(object sender, RoutedEventArgs e)
+		{
+			if (_taskDetails.Count == 0)
+			{
+				ProjectsList.DetailedView.Visibility = Visibility.Collapsed;
+				ProjectsList.ListView.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				var taskDetail = _taskDetails.Pop();
+
+				var vm = ProjectsList.DataContext as ProjectsListViewModel;
+
+				vm.SelectedTask = taskDetail;
+				ProjectsList.TaskDetailView.DataContext = taskDetail;
+			}
+
 		}
 
 		private void OnStatusChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
