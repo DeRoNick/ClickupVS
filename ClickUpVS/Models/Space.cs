@@ -23,5 +23,7 @@ namespace ClickUpVS.Models
 
 		[JsonIgnore]
 		public List<TaskItem> Tasks { get; set; }
+
+		public List<Models.TaskStatus> Statuses { get; set; }
 	}
 }

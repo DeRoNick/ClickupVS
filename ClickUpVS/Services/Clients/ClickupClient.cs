@@ -60,5 +60,8 @@ namespace ClickUpVS.Services.Clients
 
 		[Get("space/{spaceId}")]
 		public Task<Space> GetSpaceAsync([Path] string spaceId, CancellationToken cancellationToken = default);
+
+		[Get("list/{listId}")]
+		public Task<List> GetListAsync([Path] string listId, CancellationToken cancellationToken = default);
 	}
 }

@@ -99,15 +99,13 @@ namespace ClickUpVS
 					{
 						var task = await _service.GetTaskAsync(subtask.Id);
 
-						var statuses = await _service.GetAvailableStatusesAsync(task.Space.Id);
-						statuses = statuses.Where(x => x.Status != task.Status.Status).ToList();
+						var statuses = await _service.GetAvailableStatusesAsync(task.List.Id);
 
 						await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 						var vm = ProjectsList.DataContext as ProjectsListViewModel;
 
 						task.AvailableStatuses = statuses;
-						task.AvailableStatuses.Add(task.Status);
 
 						_taskDetails.Push(vm.SelectedTask);
 						vm.SelectedTask = task;
@@ -287,15 +285,13 @@ namespace ClickUpVS
 				{
 					var taskDetail = await _service.GetTaskAsync(taskItem.Id);
 
-					var statuses = await _service.GetAvailableStatusesAsync(taskDetail.Space.Id);
-					statuses = statuses.Where(x => x.Status != taskDetail.Status.Status).ToList();
+					var statuses = await _service.GetAvailableStatusesAsync(taskDetail.List.Id);
 
 					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 					var vm = ProjectsList.DataContext as ProjectsListViewModel;
 
-					taskDetail.AvailableStatuses = statuses;
-					taskDetail.AvailableStatuses.Add(taskDetail.Status); // for some reason the combo box only works if the selected object is in list, also why doesnt clickup do statuses by id?? like why have status id if youre only gonna go by name
+					taskDetail.AvailableStatuses = statuses; // why doesnt clickup do statuses by id?? like why have status id if youre only gonna go by name
 					vm.SelectedTask = taskDetail;
 					ProjectsList.TaskDetailView.DataContext = taskDetail;
 					ProjectsList.DetailedView.Visibility = Visibility.Visible;

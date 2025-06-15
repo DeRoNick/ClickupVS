@@ -156,9 +156,9 @@ namespace ClickUpVS.Services
 			});
 		}
 
-		public async Task<List<Models.TaskStatus>> GetAvailableStatusesAsync(string spaceId, CancellationToken cancellationToken = default)
+		public async Task<List<Models.TaskStatus>> GetAvailableStatusesAsync(string listId, CancellationToken cancellationToken = default)
 		{
-			var result = await _client.GetSpaceAsync(spaceId, cancellationToken);
+			var result = await _client.GetListAsync(listId, cancellationToken);
 
 			return result.Statuses;
 		}
