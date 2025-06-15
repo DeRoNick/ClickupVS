@@ -367,7 +367,10 @@ namespace ClickUpVS
 
 		private void OnWorkspaceSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			VS.MessageBox.Show("on workspace selection changed");
+			if (sender is ComboBox box && box.SelectedItem is Workspace workspace)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () => await LoadSpacesAsync(workspace.Id)).FireAndForget();
+			}
 		}
 
 		private void OnSpaceSelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

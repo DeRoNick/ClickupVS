@@ -16,7 +16,7 @@ namespace ClickUpVS.Views
 
 		private void WorkspaceComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			SelectionChanged?.Invoke(this, e);
+			SelectionChanged?.Invoke(sender, e);
 		}
 	}
 }
