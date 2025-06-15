@@ -9,10 +9,51 @@ namespace ClickUpVS.Models
 {
 	internal class TaskDetail : INotifyPropertyChanged
 	{
+		private string _description;
+		private string _initialDescription;
+		private bool descriptionChanged = false;
+
+		public string InitialDescription
+		{
+			get { return _initialDescription; }
+			set { _initialDescription = value; }
+		}
+
+		[JsonIgnore]
+		public bool DescriptionChanged
+		{
+			get
+			{
+				return descriptionChanged;
+			}
+			set
+			{
+				if (descriptionChanged != value)
+				{
+					descriptionChanged = value;
+					NotifyPropertyChanged();
+				}
+			}
+		}
+
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string TextContent { get; set; }
-		public string Description { get; set; }
+		public string Description
+		{
+			get
+			{
+				return _description;
+			}
+			set
+			{
+				if (_description != value)
+				{
+					_description = value;
+					DescriptionChanged = _description != _initialDescription;
+				}
+			}
+		}
 		public int? TimeEstimate { get; set; }
 
 		private TaskStatus status;

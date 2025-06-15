@@ -2,6 +2,7 @@
 using ClickUpVS.Services;
 using ClickUpVS.Views.Models;
 using Microsoft.VisualStudio.Threading;
+using RestEase;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -30,6 +31,7 @@ namespace ClickUpVS
 			ProjectsList.TaskDetailView.OnStatusChanged += OnStatusChanged;
 			ProjectsList.TaskDetailView.OnSubtaskButtonClicked += OnSubtaskButtonClicked;
 			ProjectsList.BackButtonClicked += OnBackButtonClicked;
+			ProjectsList.TaskDetailView.OnSaveDescriptionClicked += OnSaveDescriptionClicked;
 		}
 
 		private async Task InitializeAsync()
@@ -46,6 +48,26 @@ namespace ClickUpVS
 				ApiKeyPromptPanel.Visibility = Visibility.Collapsed;
 				MainUIPanel.Visibility = Visibility.Visible;
 				_service = new ClickupService(_options.ApiKey);
+			}
+		}
+
+		private void OnSaveDescriptionClicked(object sender, RoutedEventArgs e)
+		{
+			if (sender is Button button && button.DataContext is TaskDetail task)
+			{
+				ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+				{
+					try
+					{
+						var description = task.Description;
+
+						await _service.UpdateTaskDescriptionAsync(task);
+					}
+					catch (ApiException ex)
+					{
+						await VS.MessageBox.ShowErrorAsync("Couldnt save description", ex.Message);
+					}
+				}).FireAndForget();
 			}
 		}
 

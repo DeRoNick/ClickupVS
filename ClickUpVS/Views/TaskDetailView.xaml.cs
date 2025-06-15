@@ -28,6 +28,7 @@ namespace ClickUpVS.Views
 		public event EventHandler<RoutedEventArgs> OnAddTask;
 		public event EventHandler<System.Windows.Controls.SelectionChangedEventArgs> OnStatusChanged;
 		public event EventHandler<RoutedEventArgs> OnSubtaskButtonClicked;
+		public event EventHandler<RoutedEventArgs> OnSaveDescriptionClicked;
 
 		public TaskDetailView()
 		{
@@ -95,6 +96,11 @@ namespace ClickUpVS.Views
 		private void SubtaskButton_Click(object sender, RoutedEventArgs e)
 		{
 			OnSubtaskButtonClicked?.Invoke(sender, e);
+		}
+
+		private void SaveDescription_Click(object sender, RoutedEventArgs e)
+		{
+			OnSaveDescriptionClicked?.Invoke(sender, e);
 		}
 	}
 }

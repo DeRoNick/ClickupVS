@@ -125,9 +125,15 @@
                 </StackPanel>
 
                 <TextBlock Text="Description" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
-                <TextBox Text="{Binding Description}" AcceptsReturn="True" Height="100" TextWrapping="Wrap"
-                         Background="#2a2a2a" Foreground="White" BorderThickness="0" Padding="6"/>
+                <Grid>
+                    
+                    <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" TextWrapping="Wrap"
+                             Background="#2a2a2a" Foreground="White" BorderThickness="0" Padding="6"/>
 
+                    <Button Click="SaveDescription_Click" Width="45" MinWidth="0" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="6" Background="#1E1E1E" ToolTip="Save Description" Visibility="{Binding DescriptionChanged, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <imaging:CrispImage Width="10" Height="10" Moniker="{x:Static catalog:KnownMonikers.Send}"/>
+                    </Button>
+                </Grid>
                 <TextBlock Text="Custom Fields" FontWeight="Bold" Foreground="Gray" Margin="0,10,0,4"/>
                 <ItemsControl ItemsSource="{Binding CustomFields}">
                     <ItemsControl.ItemTemplate>
